@@ -1,0 +1,1172 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 42;
+	objects = {
+		D7BA7D76DAB5DD13389D6332 = {
+			buildActionMask = 2147483647;
+			files = (
+				);
+			generatedFileNames = (
+				);
+			isa = PBXShellScriptBuildPhase;
+			name = "Qt Qmake";
+			neededFileNames = (
+				);
+			shellPath = "/bin/sh";
+			shellScript = "make\ -C\ /Users/vaskomitanov/Downloads/CloudDrive\ 2\ -f\ \'CloudDrive.xcodeproj/qt_makeqmake.mak\'";
+		};
+		118FCBAABA162BA17933C789 = {
+			isa = PBXFileReference;
+			name = "main.cpp";
+			path = "main.cpp";
+			refType = 4;
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		2B093CA6F071B023A473CED0 = {
+			fileRef = "118FCBAABA162BA17933C789";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		EA177DE95BF7D3EF58EE43F7 = {
+			isa = PBXFileReference;
+			name = "mainwindow.cpp";
+			path = "mainwindow.cpp";
+			refType = 4;
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		462C0F34BBEF2375A9469BB5 = {
+			fileRef = "EA177DE95BF7D3EF58EE43F7";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		26302826474FF1CE96FBAD69 = {
+			isa = PBXFileReference;
+			name = "amazonwebsite.cpp";
+			path = "amazonwebsite.cpp";
+			refType = 4;
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		364CDD76D2F2B5CD7F1E9417 = {
+			fileRef = "26302826474FF1CE96FBAD69";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		AABAD104E4E52D905998651E = {
+			isa = PBXFileReference;
+			name = "htmlparser.cpp";
+			path = "htmlparser.cpp";
+			refType = 4;
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		C860CA49323AEF7B4A56A226 = {
+			fileRef = "AABAD104E4E52D905998651E";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		1CAFABBA1A8CCD97F95206EF = {
+			isa = PBXFileReference;
+			name = "serializerrunnable.cpp";
+			path = "qjson/src/serializerrunnable.cpp";
+			refType = 4;
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		5DBFA82A61B89939C5453DA9 = {
+			fileRef = "1CAFABBA1A8CCD97F95206EF";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		75837B8C06D092DAEB8377F8 = {
+			isa = PBXFileReference;
+			name = "serializer.cpp";
+			path = "qjson/src/serializer.cpp";
+			refType = 4;
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		F09C88D2A7BA32F49E5A957E = {
+			fileRef = "75837B8C06D092DAEB8377F8";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		75D3831E6EDC0E2103882271 = {
+			isa = PBXFileReference;
+			name = "qobjecthelper.cpp";
+			path = "qjson/src/qobjecthelper.cpp";
+			refType = 4;
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		49D1B48E63613AEEA6F19803 = {
+			fileRef = "75D3831E6EDC0E2103882271";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		CC3DD127B148C4D17A95930F = {
+			isa = PBXFileReference;
+			name = "parserrunnable.cpp";
+			path = "qjson/src/parserrunnable.cpp";
+			refType = 4;
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		312417E3E3D4B8B546100076 = {
+			fileRef = "CC3DD127B148C4D17A95930F";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		0CF734425939394AA6B55E3B = {
+			isa = PBXFileReference;
+			name = "parser.cpp";
+			path = "qjson/src/parser.cpp";
+			refType = 4;
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		9E7BADD5E75976F59220BF1A = {
+			fileRef = "0CF734425939394AA6B55E3B";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		DD7703E458A1DF1AE75A7212 = {
+			isa = PBXFileReference;
+			name = "json_scanner.cpp";
+			path = "qjson/src/json_scanner.cpp";
+			refType = 4;
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		B357B9663FA1CB4CEFD9E083 = {
+			fileRef = "DD7703E458A1DF1AE75A7212";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		D88F347743F26106A95A5E4B = {
+			isa = PBXFileReference;
+			name = "json_parser.cc";
+			path = "qjson/src/json_parser.cc";
+			refType = 4;
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		F3B66728E562EED113CBBC2C = {
+			fileRef = "D88F347743F26106A95A5E4B";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		CBA4E3D11D0FEB93EC27890C = {
+			isa = PBXFileReference;
+			name = "formpost.cpp";
+			path = "formpost.cpp";
+			refType = 4;
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		A8F05B350AE8CA9CBDC0614D = {
+			fileRef = "CBA4E3D11D0FEB93EC27890C";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		276BB9C557784A4AA37A896B = {
+			isa = PBXFileReference;
+			name = "utils.cpp";
+			path = "utils.cpp";
+			refType = 4;
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		03D4FFB4513345B39E0EB341 = {
+			fileRef = "276BB9C557784A4AA37A896B";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		34103D43BDA247A4D28613CD = {
+			isa = PBXFileReference;
+			name = "javascriptparser.cpp";
+			path = "javascriptparser.cpp";
+			refType = 4;
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		B15F7996C763ECB465682AA4 = {
+			fileRef = "34103D43BDA247A4D28613CD";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		83D3C1DFE1EB2BC2D0F082C0 = {
+			isa = PBXFileReference;
+			name = "userconfigdialog.cpp";
+			path = "userconfigdialog.cpp";
+			refType = 4;
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		72645910B09BEC23959EA940 = {
+			fileRef = "83D3C1DFE1EB2BC2D0F082C0";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		D719A54991DA6A85050A2970 = {
+			isa = PBXFileReference;
+			name = "httppostsendbuffer.cpp";
+			path = "httppostsendbuffer.cpp";
+			refType = 4;
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		B5F8D3E433279A389BE62E08 = {
+			fileRef = "D719A54991DA6A85050A2970";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		9EBEE31E33C4DD4AE3B91201 = {
+			isa = PBXFileReference;
+			name = "jsonoperation.cpp";
+			path = "jsonoperation.cpp";
+			refType = 4;
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		1C94EE8BF52D5E6926331831 = {
+			fileRef = "9EBEE31E33C4DD4AE3B91201";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		9B22D02111CE55BDF1D0C52B = {
+			isa = PBXFileReference;
+			name = "downloadqueue.cpp";
+			path = "downloadqueue.cpp";
+			refType = 4;
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		EAD56785254EE82EF8281C93 = {
+			fileRef = "9B22D02111CE55BDF1D0C52B";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		349537C69C86AE39A3EA4C60 = {
+			isa = PBXFileReference;
+			name = "uploadqueue.cpp";
+			path = "uploadqueue.cpp";
+			refType = 4;
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		B0D7B4E48DC81E3E20D03F41 = {
+			fileRef = "349537C69C86AE39A3EA4C60";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		336D3C48DD3B44974395C633 = {
+			isa = PBXFileReference;
+			name = "moc_mainwindow.cpp";
+			path = "moc_mainwindow.cpp";
+			refType = 4;
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		26C2BED6C570C95F5243C556 = {
+			fileRef = "336D3C48DD3B44974395C633";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		964A5145698547225FE5AEE7 = {
+			isa = PBXFileReference;
+			name = "moc_amazonwebsite.cpp";
+			path = "moc_amazonwebsite.cpp";
+			refType = 4;
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		1E9A8F042A289F7FDECA3F29 = {
+			fileRef = "964A5145698547225FE5AEE7";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		6443A2C7F23792F49908AC8A = {
+			isa = PBXFileReference;
+			name = "moc_htmlparser.cpp";
+			path = "moc_htmlparser.cpp";
+			refType = 4;
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		90AFCA2BD30147292A425183 = {
+			fileRef = "6443A2C7F23792F49908AC8A";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		03B5CDD365211CAC8D3E58C6 = {
+			isa = PBXFileReference;
+			name = "moc_parserrunnable.cpp";
+			path = "moc_parserrunnable.cpp";
+			refType = 4;
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		AB68C07407CB17CF9A745E11 = {
+			fileRef = "03B5CDD365211CAC8D3E58C6";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		30FA47D6F342CA1D25CD813C = {
+			isa = PBXFileReference;
+			name = "moc_serializerrunnable.cpp";
+			path = "moc_serializerrunnable.cpp";
+			refType = 4;
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		18E8455B13960EB94E4B9BD7 = {
+			fileRef = "30FA47D6F342CA1D25CD813C";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		E5F4BF381CDA2546CF70E16E = {
+			isa = PBXFileReference;
+			name = "moc_formpost.cpp";
+			path = "moc_formpost.cpp";
+			refType = 4;
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		27C8054F8310A7F8FE00C5B3 = {
+			fileRef = "E5F4BF381CDA2546CF70E16E";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		605CCFD189590A2C6D71156B = {
+			isa = PBXFileReference;
+			name = "moc_javascriptparser.cpp";
+			path = "moc_javascriptparser.cpp";
+			refType = 4;
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		4A36ED7717B247282497B026 = {
+			fileRef = "605CCFD189590A2C6D71156B";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		6B058CCDC8DC013CDF46A9A9 = {
+			isa = PBXFileReference;
+			name = "moc_userconfigdialog.cpp";
+			path = "moc_userconfigdialog.cpp";
+			refType = 4;
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		F81BA8AA0B4BBC2CE6910AE8 = {
+			fileRef = "6B058CCDC8DC013CDF46A9A9";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		322712230EB94C88766C1D78 = {
+			isa = PBXFileReference;
+			name = "moc_httppostsendbuffer.cpp";
+			path = "moc_httppostsendbuffer.cpp";
+			refType = 4;
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		5C9AF561BCB6AF9FC1AF45CC = {
+			fileRef = "322712230EB94C88766C1D78";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		37D337C267371F059200401A = {
+			isa = PBXFileReference;
+			name = "moc_jsonoperation.cpp";
+			path = "moc_jsonoperation.cpp";
+			refType = 4;
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		7AE12B9FAB0CE51F2A6D2BFF = {
+			fileRef = "37D337C267371F059200401A";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		BB4CDE4DCB124CFE88A48924 = {
+			isa = PBXFileReference;
+			name = "moc_downloadqueue.cpp";
+			path = "moc_downloadqueue.cpp";
+			refType = 4;
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		5E1B5E966FBDBCF76F7BC249 = {
+			fileRef = "BB4CDE4DCB124CFE88A48924";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		0C5E2D6CDF0936F159DE2F7A = {
+			isa = PBXFileReference;
+			name = "moc_uploadqueue.cpp";
+			path = "moc_uploadqueue.cpp";
+			refType = 4;
+			lastKnownFileType = "sourcecode.cpp.cpp";
+		};
+		415B14A3707CC1935AD6F574 = {
+			fileRef = "0C5E2D6CDF0936F159DE2F7A";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		AFB98B37FF0012B837A2131C = {
+			isa = PBXFileReference;
+			name = "ui_mainwindow.h";
+			path = "ui_mainwindow.h";
+			refType = 4;
+		};
+		DD103E84E660A4FDD55A3D31 = {
+			isa = PBXFileReference;
+			name = "ui_userconfigdialog.h";
+			path = "ui_userconfigdialog.h";
+			refType = 4;
+		};
+		C63FA392C61F27B1B13369C1 = {
+			isa = PBXFileReference;
+			name = "mainwindow.h";
+			path = "mainwindow.h";
+			refType = 4;
+		};
+		ED1FCE75F87ED62B2184C4F0 = {
+			isa = PBXFileReference;
+			name = "amazonwebsite.h";
+			path = "amazonwebsite.h";
+			refType = 4;
+		};
+		3DBF326662EDDFEA462BA4EF = {
+			isa = PBXFileReference;
+			name = "htmlparser.h";
+			path = "htmlparser.h";
+			refType = 4;
+		};
+		96ADA97441E14F60DB8EDB4B = {
+			isa = PBXFileReference;
+			name = "json_parser.hh";
+			path = "qjson/src/json_parser.hh";
+			refType = 4;
+		};
+		77210DC82B3EDFF2109276AF = {
+			isa = PBXFileReference;
+			name = "location.hh";
+			path = "qjson/src/location.hh";
+			refType = 4;
+		};
+		9F0880D3A6CC139FF2DB21BC = {
+			isa = PBXFileReference;
+			name = "position.hh";
+			path = "qjson/src/position.hh";
+			refType = 4;
+		};
+		1438B6919B488893BDDB02F7 = {
+			isa = PBXFileReference;
+			name = "stack.hh";
+			path = "qjson/src/stack.hh";
+			refType = 4;
+		};
+		F3E1A09F0CBA7E527EDF8D87 = {
+			isa = PBXFileReference;
+			name = "json_scanner.h";
+			path = "qjson/src/json_scanner.h";
+			refType = 4;
+		};
+		5FC6C2C758ECC4A29B212FCF = {
+			isa = PBXFileReference;
+			name = "parser.h";
+			path = "qjson/src/parser.h";
+			refType = 4;
+		};
+		AB2BBCF24905986CFAC2B174 = {
+			isa = PBXFileReference;
+			name = "parser_p.h";
+			path = "qjson/src/parser_p.h";
+			refType = 4;
+		};
+		A1B5C09DF25CE1F1EE35014D = {
+			isa = PBXFileReference;
+			name = "parserrunnable.h";
+			path = "qjson/src/parserrunnable.h";
+			refType = 4;
+		};
+		C280C11D4579545DCE47D164 = {
+			isa = PBXFileReference;
+			name = "qjson_debug.h";
+			path = "qjson/src/qjson_debug.h";
+			refType = 4;
+		};
+		DCD2BEB0104600BC81C57FB0 = {
+			isa = PBXFileReference;
+			name = "qjson_export.h";
+			path = "qjson/src/qjson_export.h";
+			refType = 4;
+		};
+		2D7EE422BCC92519C8289E1D = {
+			isa = PBXFileReference;
+			name = "qobjecthelper.h";
+			path = "qjson/src/qobjecthelper.h";
+			refType = 4;
+		};
+		C928A4E26A008DE03877A8B6 = {
+			isa = PBXFileReference;
+			name = "serializer.h";
+			path = "qjson/src/serializer.h";
+			refType = 4;
+		};
+		CA24295ED36E46B0AA229123 = {
+			isa = PBXFileReference;
+			name = "serializerrunnable.h";
+			path = "qjson/src/serializerrunnable.h";
+			refType = 4;
+		};
+		606B88FF7AB3E3F40FE175AD = {
+			isa = PBXFileReference;
+			name = "formpost.h";
+			path = "formpost.h";
+			refType = 4;
+		};
+		13DEADD61E11AD5D2E581CD6 = {
+			isa = PBXFileReference;
+			name = "utils.h";
+			path = "utils.h";
+			refType = 4;
+		};
+		FE35734726DDF6AAE715D3C5 = {
+			isa = PBXFileReference;
+			name = "javascriptparser.h";
+			path = "javascriptparser.h";
+			refType = 4;
+		};
+		71263A0CDECDD34442D07F48 = {
+			isa = PBXFileReference;
+			name = "userconfigdialog.h";
+			path = "userconfigdialog.h";
+			refType = 4;
+		};
+		FA8E1B5836EE8C5565B4E7F6 = {
+			isa = PBXFileReference;
+			name = "httppostsendbuffer.h";
+			path = "httppostsendbuffer.h";
+			refType = 4;
+		};
+		83613ED9CC723955413BBA72 = {
+			isa = PBXFileReference;
+			name = "jsonoperation.h";
+			path = "jsonoperation.h";
+			refType = 4;
+		};
+		6E3DA2E8CE8757C9AEBF6851 = {
+			isa = PBXFileReference;
+			name = "generalconfig.h";
+			path = "generalconfig.h";
+			refType = 4;
+		};
+		9DA79EEDE5AA3ED77D7E14EE = {
+			isa = PBXFileReference;
+			name = "downloadqueue.h";
+			path = "downloadqueue.h";
+			refType = 4;
+		};
+		1EDCC0C142B5508BC1602818 = {
+			isa = PBXFileReference;
+			name = "uploadqueue.h";
+			path = "uploadqueue.h";
+			refType = 4;
+		};
+		0B3A54E59326536FBB4CA3B3 = {
+			isa = PBXFileReference;
+			name = "CloudDrive.pro";
+			path = "CloudDrive.pro";
+			refType = 4;
+		};
+		AB241F823D3821A41AAC4BDE = {
+			isa = PBXFileReference;
+			name = "mainwindow.ui";
+			path = "mainwindow.ui";
+			refType = 4;
+		};
+		A5DB83BD78FE4205FDAD3FC5 = {
+			fileRef = "AB241F823D3821A41AAC4BDE";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		D800CA95809CD7F0C31856AB = {
+			isa = PBXFileReference;
+			name = "userconfigdialog.ui";
+			path = "userconfigdialog.ui";
+			refType = 4;
+		};
+		45A47334DDA4395BE359550B = {
+			fileRef = "D800CA95809CD7F0C31856AB";
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					);
+			};
+		};
+		883D7615C4D2DE3FA1218F12 = {
+			isa = PBXGroup;
+			children = (
+				"C63FA392C61F27B1B13369C1",
+				"ED1FCE75F87ED62B2184C4F0",
+				"3DBF326662EDDFEA462BA4EF",
+				"44B79B316BC99985418014EC",
+				"606B88FF7AB3E3F40FE175AD",
+				"13DEADD61E11AD5D2E581CD6",
+				"FE35734726DDF6AAE715D3C5",
+				"71263A0CDECDD34442D07F48",
+				"FA8E1B5836EE8C5565B4E7F6",
+				"83613ED9CC723955413BBA72",
+				"6E3DA2E8CE8757C9AEBF6851",
+				"9DA79EEDE5AA3ED77D7E14EE",
+				"1EDCC0C142B5508BC1602818");
+			name = "Headers";
+			refType = 4;
+		};
+		44B79B316BC99985418014EC = {
+			isa = PBXGroup;
+			children = (
+				"157E3D73096C29DC70621936");
+			name = "qjson";
+			refType = 4;
+		};
+		157E3D73096C29DC70621936 = {
+			isa = PBXGroup;
+			children = (
+				"96ADA97441E14F60DB8EDB4B",
+				"77210DC82B3EDFF2109276AF",
+				"9F0880D3A6CC139FF2DB21BC",
+				"1438B6919B488893BDDB02F7",
+				"F3E1A09F0CBA7E527EDF8D87",
+				"5FC6C2C758ECC4A29B212FCF",
+				"AB2BBCF24905986CFAC2B174",
+				"A1B5C09DF25CE1F1EE35014D",
+				"C280C11D4579545DCE47D164",
+				"DCD2BEB0104600BC81C57FB0",
+				"2D7EE422BCC92519C8289E1D",
+				"C928A4E26A008DE03877A8B6",
+				"CA24295ED36E46B0AA229123");
+			name = "src";
+			refType = 4;
+		};
+		635AD08633B2B22C574BAFC3 = {
+			isa = PBXGroup;
+			children = (
+				"B443A3E4B68BD180C7DA813A");
+			name = "qjson";
+			refType = 4;
+		};
+		B443A3E4B68BD180C7DA813A = {
+			isa = PBXGroup;
+			children = (
+				"1CAFABBA1A8CCD97F95206EF",
+				"75837B8C06D092DAEB8377F8",
+				"75D3831E6EDC0E2103882271",
+				"CC3DD127B148C4D17A95930F",
+				"0CF734425939394AA6B55E3B",
+				"DD7703E458A1DF1AE75A7212",
+				"D88F347743F26106A95A5E4B");
+			name = "src";
+			refType = 4;
+		};
+		FB61758D0F0FDA4BA867C3D5 = {
+			isa = PBXGroup;
+			children = (
+				"118FCBAABA162BA17933C789",
+				"EA177DE95BF7D3EF58EE43F7",
+				"26302826474FF1CE96FBAD69",
+				"AABAD104E4E52D905998651E",
+				"635AD08633B2B22C574BAFC3",
+				"CBA4E3D11D0FEB93EC27890C",
+				"276BB9C557784A4AA37A896B",
+				"34103D43BDA247A4D28613CD",
+				"83D3C1DFE1EB2BC2D0F082C0",
+				"D719A54991DA6A85050A2970",
+				"9EBEE31E33C4DD4AE3B91201",
+				"9B22D02111CE55BDF1D0C52B",
+				"349537C69C86AE39A3EA4C60");
+			name = "Sources";
+			refType = 4;
+		};
+		EEC299C65D5017EB9DD513B0 = {
+			isa = PBXGroup;
+			children = (
+				"AB241F823D3821A41AAC4BDE",
+				"D800CA95809CD7F0C31856AB");
+			name = "Sources [UIC]";
+			refType = 4;
+		};
+		7CABE3C80E79AD2B307756D2 = {
+			isa = PBXGroup;
+			children = (
+				"0B3A54E59326536FBB4CA3B3");
+			name = "Sources [qmake]";
+			refType = 4;
+		};
+		46E892BBB6BB6952967E0561 = {
+			isa = PBXGroup;
+			children = (
+				"336D3C48DD3B44974395C633",
+				"964A5145698547225FE5AEE7",
+				"6443A2C7F23792F49908AC8A",
+				"03B5CDD365211CAC8D3E58C6",
+				"30FA47D6F342CA1D25CD813C",
+				"E5F4BF381CDA2546CF70E16E",
+				"605CCFD189590A2C6D71156B",
+				"6B058CCDC8DC013CDF46A9A9",
+				"322712230EB94C88766C1D78",
+				"37D337C267371F059200401A",
+				"BB4CDE4DCB124CFE88A48924",
+				"0C5E2D6CDF0936F159DE2F7A",
+				"AFB98B37FF0012B837A2131C",
+				"DD103E84E660A4FDD55A3D31");
+			name = "Temporary Sources";
+			refType = 4;
+		};
+		A0A52A2ADF7A1E2A99738674 = {
+			buildActionMask = 2147483647;
+			files = (
+				);
+			generatedFileNames = (
+				"2B093CA6F071B023A473CED0",
+				"462C0F34BBEF2375A9469BB5",
+				"364CDD76D2F2B5CD7F1E9417",
+				"C860CA49323AEF7B4A56A226",
+				"5DBFA82A61B89939C5453DA9",
+				"F09C88D2A7BA32F49E5A957E",
+				"49D1B48E63613AEEA6F19803",
+				"312417E3E3D4B8B546100076",
+				"9E7BADD5E75976F59220BF1A",
+				"B357B9663FA1CB4CEFD9E083",
+				"F3B66728E562EED113CBBC2C",
+				"A8F05B350AE8CA9CBDC0614D",
+				"03D4FFB4513345B39E0EB341",
+				"B15F7996C763ECB465682AA4",
+				"72645910B09BEC23959EA940",
+				"B5F8D3E433279A389BE62E08",
+				"1C94EE8BF52D5E6926331831",
+				"EAD56785254EE82EF8281C93",
+				"B0D7B4E48DC81E3E20D03F41",
+				"26C2BED6C570C95F5243C556",
+				"1E9A8F042A289F7FDECA3F29",
+				"90AFCA2BD30147292A425183",
+				"AB68C07407CB17CF9A745E11",
+				"18E8455B13960EB94E4B9BD7",
+				"27C8054F8310A7F8FE00C5B3",
+				"4A36ED7717B247282497B026",
+				"F81BA8AA0B4BBC2CE6910AE8",
+				"5C9AF561BCB6AF9FC1AF45CC",
+				"7AE12B9FAB0CE51F2A6D2BFF",
+				"5E1B5E966FBDBCF76F7BC249",
+				"415B14A3707CC1935AD6F574");
+			isa = PBXShellScriptBuildPhase;
+			name = "Qt Preprocessors";
+			neededFileNames = (
+				"2B093CA6F071B023A473CED0",
+				"462C0F34BBEF2375A9469BB5",
+				"364CDD76D2F2B5CD7F1E9417",
+				"C860CA49323AEF7B4A56A226",
+				"5DBFA82A61B89939C5453DA9",
+				"F09C88D2A7BA32F49E5A957E",
+				"49D1B48E63613AEEA6F19803",
+				"312417E3E3D4B8B546100076",
+				"9E7BADD5E75976F59220BF1A",
+				"B357B9663FA1CB4CEFD9E083",
+				"F3B66728E562EED113CBBC2C",
+				"A8F05B350AE8CA9CBDC0614D",
+				"03D4FFB4513345B39E0EB341",
+				"B15F7996C763ECB465682AA4",
+				"72645910B09BEC23959EA940",
+				"B5F8D3E433279A389BE62E08",
+				"1C94EE8BF52D5E6926331831",
+				"EAD56785254EE82EF8281C93",
+				"B0D7B4E48DC81E3E20D03F41",
+				"26C2BED6C570C95F5243C556",
+				"1E9A8F042A289F7FDECA3F29",
+				"90AFCA2BD30147292A425183",
+				"AB68C07407CB17CF9A745E11",
+				"18E8455B13960EB94E4B9BD7",
+				"27C8054F8310A7F8FE00C5B3",
+				"4A36ED7717B247282497B026",
+				"F81BA8AA0B4BBC2CE6910AE8",
+				"5C9AF561BCB6AF9FC1AF45CC",
+				"7AE12B9FAB0CE51F2A6D2BFF",
+				"5E1B5E966FBDBCF76F7BC249",
+				"415B14A3707CC1935AD6F574");
+			shellPath = "/bin/sh";
+			shellScript = "make\ -C\ /Users/vaskomitanov/Downloads/CloudDrive\ 2\ -f\ \'CloudDrive.xcodeproj/qt_preprocess.mak\'";
+		};
+		C29B8785722055ED95EF7B57 = {
+			buildActionMask = 2147483647;
+			files = (
+				"2B093CA6F071B023A473CED0",
+				"462C0F34BBEF2375A9469BB5",
+				"364CDD76D2F2B5CD7F1E9417",
+				"C860CA49323AEF7B4A56A226",
+				"5DBFA82A61B89939C5453DA9",
+				"F09C88D2A7BA32F49E5A957E",
+				"49D1B48E63613AEEA6F19803",
+				"312417E3E3D4B8B546100076",
+				"9E7BADD5E75976F59220BF1A",
+				"B357B9663FA1CB4CEFD9E083",
+				"F3B66728E562EED113CBBC2C",
+				"A8F05B350AE8CA9CBDC0614D",
+				"03D4FFB4513345B39E0EB341",
+				"B15F7996C763ECB465682AA4",
+				"72645910B09BEC23959EA940",
+				"B5F8D3E433279A389BE62E08",
+				"1C94EE8BF52D5E6926331831",
+				"EAD56785254EE82EF8281C93",
+				"B0D7B4E48DC81E3E20D03F41",
+				"26C2BED6C570C95F5243C556",
+				"1E9A8F042A289F7FDECA3F29",
+				"90AFCA2BD30147292A425183",
+				"AB68C07407CB17CF9A745E11",
+				"18E8455B13960EB94E4B9BD7",
+				"27C8054F8310A7F8FE00C5B3",
+				"4A36ED7717B247282497B026",
+				"F81BA8AA0B4BBC2CE6910AE8",
+				"5C9AF561BCB6AF9FC1AF45CC",
+				"7AE12B9FAB0CE51F2A6D2BFF",
+				"5E1B5E966FBDBCF76F7BC249",
+				"415B14A3707CC1935AD6F574");
+			isa = PBXSourcesBuildPhase;
+			name = "Build Sources";
+		};
+		9B36DA7E32F0304E780E7972 = {
+			isa = PBXFrameworkReference;
+			name = "QtGui.framework";
+			path = "/Library/Frameworks/QtGui.framework";
+			refType = 0;
+		};
+		501667F26B3C1FF6767A7C12 = {
+			fileRef = "9B36DA7E32F0304E780E7972";
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		7BC2E65A5E699A5E5D834CA2 = {
+			isa = PBXFrameworkReference;
+			name = "QtCore.framework";
+			path = "/Library/Frameworks/QtCore.framework";
+			refType = 0;
+		};
+		069D05B0128AE5DC7EE31738 = {
+			fileRef = "7BC2E65A5E699A5E5D834CA2";
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		B6B9970B86A6C219B0869FE9 = {
+			isa = PBXFrameworkReference;
+			name = "QtNetwork.framework";
+			path = "/Library/Frameworks/QtNetwork.framework";
+			refType = 0;
+		};
+		3826A0833FCB54E86728C6EF = {
+			fileRef = "B6B9970B86A6C219B0869FE9";
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		ED1E82605DD74B483AF3C982 = {
+			children = (
+				"9B36DA7E32F0304E780E7972",
+				"7BC2E65A5E699A5E5D834CA2",
+				"B6B9970B86A6C219B0869FE9");
+			isa = PBXGroup;
+			name = "External Frameworks and Libraries";
+			path = "";
+			refType = 4;
+		};
+		2A1043669E6E5A7426EA502A = {
+			buildActionMask = 2147483647;
+			files = (
+				"501667F26B3C1FF6767A7C12",
+				"069D05B0128AE5DC7EE31738",
+				"3826A0833FCB54E86728C6EF");
+			isa = PBXFrameworksBuildPhase;
+			name = "Frameworks & Libraries";
+		};
+		3787F99312C85FF0073FD7BA = {
+			buildActionMask = 2147483647;
+			files = (
+			);
+			isa = PBXResourcesBuildPhase;
+			name = "Bundle Resources";
+		};
+		F6069D5A5DA8AA28EDB8B3C6 = {
+			name = "Project Copy";
+			buildActionMask = 2147483647;
+			dstPath = "/Users/vaskomitanov/Downloads/CloudDrive/ 2";
+			dstSubfolderSpec = 0;
+			files = (
+"07E0DFA73EB56DCB9E28CDD9");
+			isa = PBXCopyFilesBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		07E0DFA73EB56DCB9E28CDD9 = {
+			fileRef = "DFF7123801BDD25F0304F63A";
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		05596AB53D8D521C69802C27 = {
+			children = (
+				"FB61758D0F0FDA4BA867C3D5",
+				"46E892BBB6BB6952967E0561",
+				"883D7615C4D2DE3FA1218F12",
+				"7CABE3C80E79AD2B307756D2",
+				"EEC299C65D5017EB9DD513B0",
+				"ED1E82605DD74B483AF3C982");
+			isa = PBXGroup;
+			name = "CloudDrive";
+			path = "";
+			refType = 4;
+		};
+		DFF7123801BDD25F0304F63A = {
+			isa = PBXFileReference;
+			explicitFileType = "wrapper.application";
+			path = "CloudDrive.app";
+			refType = 3;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		068F80C7519D0528FB08E821 = {
+			children = (
+				"DFF7123801BDD25F0304F63A");
+			isa = PBXGroup;
+			name = "Products";
+			refType = 4;
+		};
+		273A5792934A6FED61463871 = {
+			buildPhases = (
+				"D7BA7D76DAB5DD13389D6332",
+				"A0A52A2ADF7A1E2A99738674",
+				"F6069D5A5DA8AA28EDB8B3C6",
+				"C29B8785722055ED95EF7B57",
+				"2A1043669E6E5A7426EA502A",
+				"3787F99312C85FF0073FD7BA");
+			buildSettings = {
+				HEADER_SEARCH_PATHS = (
+					"/Library/Frameworks/QtCore.framework/Versions/4/Headers",
+					"/usr/include/QtCore",
+					"/Library/Frameworks/QtNetwork.framework/Versions/4/Headers",
+					"/usr/include/QtNetwork",
+					"/Library/Frameworks/QtGui.framework/Versions/4/Headers",
+					"/usr/include/QtGui",
+					"/usr/include",
+					".",
+					".",
+					"/usr/local/include",
+					"/System/Library/Frameworks/CarbonCore.framework/Headers",
+					"/usr/local/Qt4.7/mkspecs/macx-xcode");
+				LIBRARY_SEARCH_PATHS = (
+					"/Library/Frameworks");
+				OPTIMIZATION_CFLAGS = (
+					);
+				OTHER_CFLAGS = (
+					"-pipe",
+					"-O2",
+					"-Wall",
+					"-W",
+					"-DQT_NO_DEBUG",
+					"-DQT_GUI_LIB",
+					"-DQT_NETWORK_LIB",
+					"-DQT_CORE_LIB",
+					"-DQT_SHARED");
+				OTHER_CPLUSPLUSFLAGS = (
+					"-pipe",
+					"-O2",
+					"-Wall",
+					"-W",
+					"-DQT_NO_DEBUG",
+					"-DQT_GUI_LIB",
+					"-DQT_NETWORK_LIB",
+					"-DQT_CORE_LIB",
+					"-DQT_SHARED");
+				LEXFLAGS = "";
+				YACCFLAGS = "-d";
+				OTHER_REZFLAGS = "";
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = "";
+				PREBINDING = NO;
+				INFOPLIST_FILE = "Info.plist";
+				BUILD_ROOT = "/Users/vaskomitanov/Downloads/CloudDrive 2";
+				OTHER_LDFLAGS = (
+						"-headerpad_max_install_names",
+						"-L/Library/Frameworks",
+						"-F/Library/Frameworks");
+				DYLIB_CURRENT_VERSION = "1.0.0";
+				DYLIB_COMPATIBILITY_VERSION = "1.0";
+				MACOSX_DEPLOYMENT_TARGET = "10.4";
+				PRODUCT_NAME = "CloudDrive";
+			};
+			conditionalBuildSettings = {
+			};
+			dependencies = (
+				);
+			productReference = "DFF7123801BDD25F0304F63A";
+			shouldUseHeadermap = 1;
+			isa = PBXNativeTarget;
+			productType = "com.apple.product-type.application";
+			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<!DOCTYPE plist SYSTEM \"file://localhost/System/Library/DTDs/PropertyList.dtd\">
+<plist version=\"0.9\">
+<dict>
+	<key>CFBundleIconFile</key>
+	<string></string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+    <key>CFBundleGetInfoString</key>
+	<string>Created by Qt/QMake</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleExecutable</key>
+	<string>CloudDrive</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.yourcompany.CloudDrive</string>
+	<key>NOTE</key>
+	<string>This file was generated by Qt/QMake.</string>
+</dict>
+</plist>
+";
+			name = "CloudDrive";
+			productName = "CloudDrive";
+			startupPath = "<<ProjectDirectory>>";
+		};
+		8DB1DD96F65B1BF1FFC506E0 = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = "NO";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = "YES";
+				GCC_OPTIMIZATION_LEVEL = "0";
+			};
+			name = "Debug";
+		};
+		2C641C3335766025DD51B7BD = {
+			buildRules = (
+				);
+			buildSettings = {
+				COPY_PHASE_STRIP = "NO";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = "YES";
+				GCC_OPTIMIZATION_LEVEL = "0";
+			};
+			isa = "PBXBuildStyle";
+			name = "Debug";
+		};
+		95E1EB2E5DDD587BE5B3E548 = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = "YES";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = "NO";
+			};
+			name = "Release";
+		};
+		26DE8D2AEA4B3714B41E931F = {
+			buildRules = (
+				);
+			buildSettings = {
+				COPY_PHASE_STRIP = "YES";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = "NO";
+			};
+			isa = "PBXBuildStyle";
+			name = "Release";
+		};
+		2A951308CDB28F104D0A4BD2 = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				"8DB1DD96F65B1BF1FFC506E0",
+				"95E1EB2E5DDD587BE5B3E548");
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationIsName = "Release";
+		};
+		91B15E841AA80083484172DE = {
+			buildStyles = (
+				"2C641C3335766025DD51B7BD",
+				"26DE8D2AEA4B3714B41E931F");
+			hasScannedForEncodings = 1;
+			isa = PBXProject;
+			mainGroup = "05596AB53D8D521C69802C27";
+			buildConfigurationList = "2A951308CDB28F104D0A4BD2";
+			projectDirPath = "";
+			targets = (
+				"273A5792934A6FED61463871");
+		};
+	};
+	rootObject = "91B15E841AA80083484172DE";
+}
