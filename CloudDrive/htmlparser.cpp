@@ -267,7 +267,7 @@ bool HtmlParser::parseHtmlElement(char *elementName, char *elementData)
             {
                 for (const char **filterElement = filterElements; *filterElement != NULL; ++filterElement)
                 {
-                    if (strcasecmp(elementName, *filterElement) == 0)
+                    if (_stricmp(elementName, *filterElement) == 0)
                     {
                         //qDebug() << "E:" << elementName << "D:" << elementData;
                         //if (parserListener != NULL)

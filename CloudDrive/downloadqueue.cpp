@@ -25,7 +25,7 @@
 
 #include "generalconfig.h"
 #include "downloadqueue.h"
-#include "utils.h"
+#include "cloudutils.h"
 #include <qjson/src/parser.h>
 
 DownloadQueueItem::DownloadQueueItem(const QString &sourceFileName,
@@ -76,7 +76,11 @@ DownloadQueue::DownloadQueue(QNetworkAccessManager *networkAccessManager,
 
 JsonOperation* DownloadQueue::createJsonOperation()
 {
-    return new JsonOperation(networkAccessManager, driveServer, customerId, sessionId);
+    JsonOperation* jsonOp =
+            new JsonOperation(networkAccessManager, driveServer, customerId, sessionId);
+    connect(jsonOp, SIGNAL(jsonOpError(QString, QString)),
+            this, SIGNAL(jsonOpError(QString, QString)));
+    return jsonOp;
 }
 
 bool DownloadQueue::addFileToDownloadQueue(

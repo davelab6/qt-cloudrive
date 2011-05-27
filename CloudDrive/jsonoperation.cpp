@@ -17,9 +17,9 @@
 */
 
 #include <qjson/src/parser.h>
-#include "utils.h"
 #include <QDebug>
 #include <QNetworkReply>
+#include "cloudutils.h"
 #include "jsonoperation.h"
 #include "generalconfig.h"
 
@@ -106,7 +106,7 @@ void JsonOperation::finished()
         }
         internalBuff.clear();
         qDebug() << errorCode << errorMessage;
-        emit error(errorCode, errorMessage);        
+        emit jsonOpError(errorCode, errorMessage);
     }
 }
 
@@ -128,9 +128,9 @@ bool JsonOperation::createByPath(
     QList<JsonApiParams> params;
     params.append(JsonApiParams("autoparent", autoparent?"true":"false"));
     params.append(JsonApiParams("conflictResolution", conflictResolution));
-    params.append(JsonApiParams("name", urlEncode(name)));
+    params.append(JsonApiParams("name", Utils::urlEncode(name)));
     params.append(JsonApiParams("overwrite", overwrite?"true":"false"));
-    params.append(JsonApiParams("path", urlEncode(path)));
+    params.append(JsonApiParams("path", Utils::urlEncode(path)));
     params.append(JsonApiParams("type", type /*FILE*/));
     connect(this, SIGNAL(response()), this, SLOT(createByPathResponse()));
     return execute("createByPath", params);
@@ -269,7 +269,7 @@ bool JsonOperation::completeFileUploadById(const QString &objectId, const QByteA
 {
     QList<JsonApiParams> params;
     params.append(JsonApiParams("objectId", objectId));
-    params.append(JsonApiParams("storageKey", urlEncode(storageKey)));
+    params.append(JsonApiParams("storageKey", Utils::urlEncode(storageKey)));
     connect(this, SIGNAL(response()), this, SLOT(completeFileUploadByIdResponse()));
     return execute("completeFileUploadById", params);
 }
@@ -304,7 +304,7 @@ bool JsonOperation::getDownloadUrlById(const QString &fileObjectId,
     QList<JsonApiParams> params;
     params.append(JsonApiParams("objectId", fileObjectId));
     params.append(JsonApiParams("attachment", "true"));
-    params.append(JsonApiParams("deviceId.deviceSerialNumber", urlEncode(driveSerialNum)));
+    params.append(JsonApiParams("deviceId.deviceSerialNumber", Utils::urlEncode(driveSerialNum)));
     params.append(JsonApiParams("deviceId.deviceType", "ADrive_Web"));
 
     connect(this, SIGNAL(response()), this, SLOT(getDownloadUrlByIdResponse()));

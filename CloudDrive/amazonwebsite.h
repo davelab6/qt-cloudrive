@@ -83,7 +83,7 @@ private:
 
 
 private slots:     
-     void error(const QString& errorCode, const QString& errorMessage);
+     void error(QString errorCode, QString errorMessage);
      void onSignInPageHtmlElement(QString elementName, QList<QHtmlAttribute *> elementAttributes);
      void loadSignInPageFinished();
      void handleSendCreditentialsPage();
@@ -104,7 +104,7 @@ public:
      bool listById(QString objectId, QString ordering, int nextToken, int MaxItems, QString filter);
 
 signals:
-    void jsonOpError(const QString& errorCode, const QString& errorMessage);
+    void jsonOpError(QString errorCode, QString errorMessage);
     void onUserSignedIn(const QString &customerId, const QString &sessionId);
     void onGetInfoByPath(const QString &objectId);
     void onListObjects(const QList<FileObject> &objectList);

@@ -90,6 +90,7 @@ signals:
     void onDownloadProgress(const QString &fileName, qint64 bytesDownloaded, qint64 totalBytes);
     void onFileDownloaded(const QString &contentType, qlonglong contentLength,
                           const QString &fileName, QIODevice *inputStream, const QString &fileDestDir);
+    void jsonOpError(QString errorCode, QString errorMessage);
 
 };
 
