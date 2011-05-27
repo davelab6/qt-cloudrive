@@ -1,21 +1,34 @@
+/*
+    QT Cloud Drive, desktop application for connecting to Cloud Drive
+    Copyright (C) 2011 Vasko Mitanov vasko.mitanov@gmail.com
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QDropEvent>
-#include <QDragMoveEvent>
-#include <QDragEnterEvent>
 #include <QMainWindow>
 #include <QTableWidgetItem>
-
-#include "deferredmimedata.h"
-
 #include <phonon/audiooutput.h>
 #include <phonon/seekslider.h>
 #include <phonon/mediaobject.h>
 #include <phonon/volumeslider.h>
 #include <phonon/backendcapabilities.h>
 
-#include <amazonwebsite.h>
+#include "deferredmimedata.h"
+#include "amazonwebsite.h"
 
 namespace Ui {
     class MainWindow;
@@ -32,7 +45,7 @@ public:
 public slots:
     void onUserSignedIn(const QString &customerId, const QString &sessionId);
     void onGetRootPathObjectId(const QString &objectId);
-    void onListObjects(const QList<FileObject> &objectList);    
+    void onListObjects(const QList<CloudDriveFileObject> &objectList);    
     void onDownloadProgress(const QString &fileName, qint64 bytesReceived, qint64 bytesTotal);
     void onUploadProgress(const QString &fileName, qint64 bytesSent, qint64 bytesTotal);
     void onFileDownloaded(const QString &contentType, qlonglong contentLength,
@@ -107,7 +120,7 @@ private:
                       const QString &sourceFileObjectId,
                       const QString &destinationDir);
     QString getCurrentRemotePath();    
-    void displayObjects(const QList<FileObject> &objectList);   
+    void displayObjects(const QList<CloudDriveFileObject> &objectList);   
     void downloadFileByItemIndex(const QModelIndex & index);
 
 signals:

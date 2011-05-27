@@ -17,8 +17,10 @@
 */
 
 #include <QtGlobal>
-#include <qjson/src/parser.h>
+
+#include "qjson/src/parser.h"
 #include "amazonwebsite.h"
+#include "clouddriveobject.h"
 #include "cloudutils.h"
 #include "javascriptparser.h"
 
@@ -30,8 +32,6 @@ AmazonWebsite::AmazonWebsite(): QObject()
     connect(&networkAccessManager, SIGNAL(sslErrors(QNetworkReply*,QList<QSslError>)),
                 this, SLOT(sslErrors(QNetworkReply*,QList<QSslError>)));
 
-    driveServer = "/clouddrive/api/";    
-    driveSerialNum = "191-5955500-0636011";
     downloadQueue = NULL;
     uploadQueue = NULL;
 }
@@ -71,7 +71,7 @@ bool AmazonWebsite::loadSignInPage()
     httpGetRequest.setRawHeader(QByteArray("Connection"), QByteArray("keep-alive"));
     httpGetRequest.setRawHeader(QByteArray("Host"), QByteArray("www.amazon.com"));
     httpGetRequest.setRawHeader(QByteArray("Origin"), QByteArray("https://www.amazon.com"));
-    httpGetRequest.setRawHeader(QByteArray("User-Agent"), QByteArray(USER_AGENT));
+    httpGetRequest.setRawHeader(QByteArray("User-Agent"), UserAgent);
 
     QNetworkReply* reply = networkAccessManager.get(httpGetRequest);
     qDebug() << "Login Sent";
@@ -105,27 +105,26 @@ void AmazonWebsite::loadSignInPageFinished()
 }
 
 void AmazonWebsite::onSignInPageHtmlElement(QString elementName, QList<QHtmlAttribute *> elementAttributes)
-{
-    QList<QHtmlAttribute *>::const_iterator iter;
+{    
     if (elementName.compare(QString("input"), Qt::CaseInsensitive) == 0)
     {
         QString name;
         QString value;
         QString type;
-        for (iter = elementAttributes.begin(); iter != elementAttributes.end(); iter++)
+        foreach (QHtmlAttribute *elem, elementAttributes)
         {
-            QString attribName = (*iter)->first;
+            QString attribName = elem->first;
             if (attribName.compare(QString("name"), Qt::CaseInsensitive) == 0)
             {
-                name = (*iter)->second;
+                name = elem->second;
             }
             else if (attribName.compare(QString("value"), Qt::CaseInsensitive) == 0)
             {
-                value = (*iter)->second;
+                value = elem->second;
             }
             else if (attribName.compare(QString("type"), Qt::CaseInsensitive) == 0)
             {
-                type = (*iter)->second;
+                type = elem->second;
             }
         }
         if (type.compare(QString("hidden"), Qt::CaseInsensitive) == 0)
@@ -138,13 +137,12 @@ void AmazonWebsite::onSignInPageHtmlElement(QString elementName, QList<QHtmlAttr
         if (loginAction.isEmpty())
         {
             QString currAction;
-
-            for (iter = elementAttributes.begin(); iter != elementAttributes.end(); iter++)
+            foreach (QHtmlAttribute *elem, elementAttributes)
             {
-                QString attribName = (*iter)->first;
+                QString attribName = elem->first;
                 if (attribName.compare(QString("action"), Qt::CaseInsensitive) == 0)
                 {
-                    currAction = (*iter)->second;
+                    currAction = elem->second;
                     if (currAction.startsWith("http"))
                     {
                         loginAction = currAction;
@@ -185,7 +183,7 @@ bool AmazonWebsite::sendCreditentials()
     httpPostRequest.setRawHeader(QByteArray("Host"), QByteArray("www.amazon.com"));
     httpPostRequest.setRawHeader(QByteArray("Origin"), QByteArray("https://www.amazon.com"));    
     httpPostRequest.setRawHeader(QByteArray("Referer"), signInRefererPageUrl);
-    httpPostRequest.setRawHeader(QByteArray("User-Agent"), QByteArray(USER_AGENT));
+    httpPostRequest.setRawHeader(QByteArray("User-Agent"), UserAgent);
     httpPostRequest.setHeader(QNetworkRequest::ContentTypeHeader, QByteArray("application/x-www-form-urlencoded"));
 
     QUrl params;
@@ -241,7 +239,7 @@ bool AmazonWebsite::fetchSessionAndCustomerId(QString redirectLocation)
     httpGetRequest.setRawHeader(QByteArray("Connection"), QByteArray("keep-alive"));
     httpGetRequest.setRawHeader(QByteArray("Host"), QByteArray("www.amazon.com"));
     httpGetRequest.setRawHeader(QByteArray("Origin"), QByteArray("https://www.amazon.com"));
-    httpGetRequest.setRawHeader(QByteArray("User-Agent"), QByteArray(USER_AGENT));
+    httpGetRequest.setRawHeader(QByteArray("User-Agent"), UserAgent);
 
     QNetworkReply *networkReply = networkAccessManager.get(httpGetRequest);
     return connect(networkReply, SIGNAL(finished()),
@@ -255,12 +253,25 @@ void AmazonWebsite::createDownloadQueue()
         delete downloadQueue;
     }
     signedIn = true;
-    downloadQueue = new DownloadQueue(&networkAccessManager, customerId, sessionId, driveSerialNum, driveServer);
-    connect(downloadQueue, SIGNAL(onDownloadProgress(const QString &, qint64, qint64)), this, SIGNAL(onDownloadProgress(const QString &, qint64, qint64)));
+    downloadQueue = new DownloadQueue(
+                &networkAccessManager,
+                customerId,
+                sessionId,
+                DriveSerialNum,
+                DriveServer);
+
     connect(downloadQueue,
-            SIGNAL(onFileDownloaded(const QString &, qlonglong, const QString &, QIODevice *, const QString &)),
+            SIGNAL(onDownloadProgress(const QString &, qint64, qint64)),
             this,
-            SIGNAL(onFileDownloaded(const QString &, qlonglong, const QString &, QIODevice *, const QString &)));
+            SIGNAL(onDownloadProgress(const QString &, qint64, qint64)));
+
+    connect(downloadQueue,
+            SIGNAL(onFileDownloaded(const QString &, qlonglong,
+                                    const QString &, QIODevice *, const QString &)),
+            this,
+            SIGNAL(onFileDownloaded(const QString &, qlonglong,
+                                    const QString &, QIODevice *, const QString &)));
+
     connect(downloadQueue, SIGNAL(jsonOpError(QString, QString)),
             this, SIGNAL(jsonOpError(QString, QString)));
 }
@@ -272,11 +283,15 @@ void AmazonWebsite::createUploadQueue()
         delete uploadQueue;
     }
     signedIn = true;
-    uploadQueue = new UploadQueue(&networkAccessManager, customerId, sessionId, driveSerialNum, driveServer);
+    uploadQueue = new UploadQueue(&networkAccessManager, customerId,
+                                  sessionId, DriveSerialNum, DriveServer);
+
     connect(uploadQueue, SIGNAL(onUploadProgress(const QString &, qint64, qint64)),
             this, SIGNAL(onUploadProgress(const QString &, qint64, qint64)));
+
     connect(uploadQueue, SIGNAL(onFileUploaded(const QString &)),
             this, SIGNAL(onFileUploaded(const QString &)));
+
     connect(uploadQueue, SIGNAL(jsonOpError(QString, QString)),
             this, SIGNAL(jsonOpError(QString, QString)));
 }
@@ -321,26 +336,25 @@ void AmazonWebsite::onCloudDrivePageHtmlElement(
     QString elementName,
     QList<QHtmlAttribute *> elementAttributes)
 {
-    QList<QHtmlAttribute *>::const_iterator iter;
     if (elementName.compare(QString("input"), Qt::CaseInsensitive) == 0)
     {
         QString id;
         QString value;
         QString type;
-        for (iter = elementAttributes.begin(); iter != elementAttributes.end(); iter++)
+        foreach (QHtmlAttribute *attrib, elementAttributes)
         {
-            QString attribName = (*iter)->first;
+            QString attribName = attrib->first;
             if (attribName.compare(QString("id"), Qt::CaseInsensitive) == 0)
             {
-                id = (*iter)->second;
+                id = attrib->second;
             }
             else if (attribName.compare(QString("value"), Qt::CaseInsensitive) == 0)
             {
-                value = (*iter)->second;
+                value = attrib->second;
             }
             else if (attribName.compare(QString("type"), Qt::CaseInsensitive) == 0)
             {
-                type = (*iter)->second;
+                type = attrib->second;
             }
         }
         if (type.compare(QString("hidden"), Qt::CaseInsensitive) == 0)
@@ -377,7 +391,7 @@ bool AmazonWebsite::signOut()
     httpGetRequest.setRawHeader(QByteArray("Connection"), QByteArray("keep-alive"));
     httpGetRequest.setRawHeader(QByteArray("Host"), QByteArray("www.amazon.com"));
     httpGetRequest.setRawHeader(QByteArray("Origin"), QByteArray("https://www.amazon.com"));
-    httpGetRequest.setRawHeader(QByteArray("User-Agent"), QByteArray(USER_AGENT));
+    httpGetRequest.setRawHeader(QByteArray("User-Agent"), UserAgent);
 
 
     QEventLoop loop;
@@ -451,7 +465,8 @@ bool  AmazonWebsite::addFileToUploadQueue(const QString &localFilePath, const QS
 JsonOperation* AmazonWebsite::createJsonOperation()
 {
     JsonOperation* jsonOp =
-            new JsonOperation(&networkAccessManager, driveServer, customerId, sessionId);
+            new JsonOperation(&networkAccessManager, DriveServer, customerId, sessionId);
+
     connect(jsonOp, SIGNAL(jsonOpError(QString, QString)),
             this, SLOT(error(QString, QString)));
     return jsonOp;
@@ -517,19 +532,25 @@ bool AmazonWebsite::listById(QString objectId,
 void AmazonWebsite::listByIdResponse()
 {
     JsonOperation *jsonOp = (JsonOperation *)sender();
-    emit onListObjects(FileObject::parseFileObjects(jsonOp->getData()));
+    QList<CloudDriveFileObject> fileObjects;
+    if (parseFileObjects(jsonOp->getData(), fileObjects))
+    {
+        emit onListObjects(fileObjects);
+    }
     jsonOp->deleteLater();
 }
 
-QList<FileObject> FileObject::parseFileObjects(QByteArray encodedObjects)
-{
-    QList<FileObject> result;    
+bool AmazonWebsite::parseFileObjects(
+    QByteArray encodedObjects,
+    QList<CloudDriveFileObject>& fileObjects ) const
+{    
     QJson::Parser parser;
     bool parseStatus;
     QVariantMap parseResult = parser.parse(encodedObjects, &parseStatus).toMap();
     if (!parseStatus)
     {
         qDebug() << "An error occurred during parsing";
+        return false;
     }
     else
     {
@@ -538,21 +559,15 @@ QList<FileObject> FileObject::parseFileObjects(QByteArray encodedObjects)
         QVariantList::const_iterator rIter;
         for (rIter = objectList.begin(); rIter != objectList.end(); rIter++)
         {
-            FileObject fileObject;
             QVariantMap objectMap = (*rIter).toMap();
-            fileObject.ObjectId = objectMap["objectId"].toString();
-            fileObject.ParentObjectId = objectMap["parentObjectId"].toString();
-            fileObject.ObjectName = objectMap["name"].toString();
-            fileObject.ObjectType = objectMap["type"].toString();
-            fileObject.FileSize = objectMap["size"].toInt();
-            fileObject.LastModified = objectMap["lastUpdatedDate"].toDateTime();
-            result.append(fileObject);
+            CloudDriveFileObject fileObject(objectMap);
+            fileObjects.append(fileObject);
         }
-    }
-    return result;
+        return true;
+    }    
 }
 
-bool AmazonWebsite::removeBulkById(QList<QString> objectIds)
+bool AmazonWebsite::removeBulkById(const QList<QString>& objectIds)
 {    
     JsonOperation* jsonOper = createJsonOperation();
     connect(jsonOper, SIGNAL(onRemoveBulkById(const QString &)),
@@ -567,7 +582,7 @@ void AmazonWebsite::onRemoveBulkById(const QString &requestId)
     emit onBulkRemovedById();
 }
 
-bool AmazonWebsite::recycleBulkById(QList<QString> objectIds)
+bool AmazonWebsite::recycleBulkById(const QList<QString>& objectIds)
 {
     JsonOperation* jsonOper = createJsonOperation();
     connect(jsonOper, SIGNAL(onRecycleBulkById(const QString &)),
@@ -587,7 +602,7 @@ bool AmazonWebsite::getDownloadUrlById(const QString &objectId)
     JsonOperation *jsonOp = createJsonOperation();
     connect(jsonOp, SIGNAL(onGetDownloadUrlById(const QByteArray &)),
                             this, SLOT(onGetDownloadUrlById(const QByteArray &)));
-    return jsonOp->getDownloadUrlById(objectId, driveSerialNum);
+    return jsonOp->getDownloadUrlById(objectId, DriveSerialNum);
 }
 
 void AmazonWebsite::onGetDownloadUrlById(const QByteArray &downloadURL)
@@ -604,11 +619,11 @@ bool AmazonWebsite::createFolder(const QString &parentFolder, const QString &fol
             this, SLOT(onCreateFolderByPath(const QString&)));
     return jsonOper->createByPath(
                 true,
-                UPLOAD_CONFLICT_RESOLUTION_RENAME,
+                UploadConflictResRename,
                 folderName,
                 true,
                 parentFolder,
-                OBJECT_TYPE_FOLDER);
+                ObjectTypeFolder);
 }
 
 void AmazonWebsite::onCreateFolderByPath(const QString& createdObjectId)

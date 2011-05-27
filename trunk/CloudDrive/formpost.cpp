@@ -19,20 +19,13 @@
 #include "formpost.h"
 #include <QDebug>
 
-FormPost::FormPost():QObject(0)
+FormPost::FormPost(
+    const QByteArray& userAgent)
+      :QObject(0),
+      m_userAgent(userAgent)
 {
-  userAgentS = "";
-  refererS = "";
   networkAccessManager = NULL;  
   postSendBuffer.open(QBuffer::ReadWrite);
-}
-
-QString FormPost::userAgent() {
-  return userAgentS;
-}
-
-void FormPost::setUserAgent(QString agent) {
-  userAgentS=agent;
 }
 
 void FormPost::setNetworkAccessManager(QNetworkAccessManager * nam)
@@ -40,46 +33,47 @@ void FormPost::setNetworkAccessManager(QNetworkAccessManager * nam)
     networkAccessManager = nam;
 }
 
-QString FormPost::referer() {
-  return refererS;
-}
-
-void FormPost::setReferer(QString ref) {
-  refererS=ref;
-}
-
-void FormPost::addField(QString name, QString value)
+void FormPost::addField(const QString& name, const QString& value)
 {
     postSendBuffer.addField(name, value);
 }
 
-void FormPost::setFile(QString fieldName, QString fileName, QString mime)
+void FormPost::setFile(const QString& fieldName,
+                       const QString& fileName,
+                       const QString& mime)
 {
     postSendBuffer.setFile(fieldName, fileName, mime);
 }
 
-QNetworkReply * FormPost::postData(QString url)
+QNetworkReply * FormPost::postData(const QString& url)
 {
     if (networkAccessManager == NULL)
     {
         return NULL;
     }
 
-  QString host = url.right(url.length()-url.indexOf("://")-3);
-  host = host.left(host.indexOf("/"));
-  QString contentType;
-  qlonglong contentLength;
+    QString host = url.right(url.length()-url.indexOf("://")-3);
+    host = host.left(host.indexOf("/"));
+    QString contentType;
+    qlonglong contentLength;
 
-  postSendBuffer.buildPostTemplate(contentType, contentLength);
-  QNetworkRequest request;
-  request.setRawHeader("Host", host.toAscii());
-  if (userAgentS!="") request.setRawHeader("User-Agent", userAgentS.toAscii());
-  if (refererS!="") request.setRawHeader("Referer", refererS.toAscii());
-  request.setHeader(QNetworkRequest::ContentTypeHeader, contentType.toAscii());
-  request.setHeader(QNetworkRequest::ContentLengthHeader, QString::number(contentLength));
-  request.setUrl(QUrl(url));  
-  postSendBuffer.seek(0);
-  QNetworkReply * reply = networkAccessManager->post(request, &postSendBuffer);
-  return reply;
-
+    postSendBuffer.buildPostTemplate(contentType, contentLength);
+    QNetworkRequest request;
+    request.setRawHeader("Host", host.toAscii());
+    if (m_userAgent.length() > 0)
+    {
+        request.setRawHeader("User-Agent", m_userAgent);
+    }
+    /*
+    if (m_httpReferer.length() > 0)
+    {
+        request.setRawHeader("Referer", m_userAgent);
+    }
+    */
+    request.setHeader(QNetworkRequest::ContentTypeHeader, contentType.toAscii());
+    request.setHeader(QNetworkRequest::ContentLengthHeader, QString::number(contentLength));
+    request.setUrl(QUrl(url));
+    postSendBuffer.seek(0);
+    QNetworkReply * reply = networkAccessManager->post(request, &postSendBuffer);
+    return reply;
 }

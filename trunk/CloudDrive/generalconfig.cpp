@@ -13,21 +13,23 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.    
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef UTILS_H
-#define UTILS_H
+#include "generalconfig.h"
 
-#include <QString>
-#include <QByteArray>
+const QByteArray UserAgent("Mozilla/5.0 (X11; U; Linux i686; en-US) "
+                           "AppleWebKit/534.16 (KHTML, like Gecko) "
+                           "Chrome/10.0.648.205 Safari/534.16");
 
-void char2hex( QChar dec, QString &str );
-QString urlEncode(const QByteArray &c);
-QString urlEncode(const QString &c);
-QString formatStorage(qlonglong storageSpace);
-QString decodeFileName(QString contentDisp);
-QString extractFileName(const QString &fileName);
-QString extractFileDir(const QString &fileName);
+const QString DriveServer("/clouddrive/api/");
+const QString DriveSerialNum("191-5955500-0636011");
 
-#endif // UTILS_H
+const QString Organization("Vasko Mitanov");
+const QString Product("QTCloudDrive");
+const QString ProductVersion("201105281440");
+const QString EmailConfigKey("userEmail");
+const QString PasswordConfigKey("userPass");
+
+
+

@@ -18,6 +18,7 @@
 
 #ifndef DEFERREDMIMEDATA_H
 #define DEFERREDMIMEDATA_H
+
 #include <QHash>
 #include <QList>
 #include <QUrl>
@@ -27,6 +28,10 @@ class DeferredMimeDataItem
 {
 public:
     DeferredMimeDataItem(const QUrl &filenameLocalUrl, const QString &objectId);
+    QUrl const& getDownloadFileNameLocalUrl() const;
+    QString const& getDownloadObjectId() const;
+
+private:
     QUrl downloadFileNameLocalUrl;
     QString downloadObjectId;
 };

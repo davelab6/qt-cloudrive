@@ -23,7 +23,7 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    a.setApplicationName(PRODUCT);
+    a.setApplicationName(Product);
     MainWindow w;
     w.show();
 

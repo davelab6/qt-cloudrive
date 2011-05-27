@@ -26,11 +26,6 @@
 #include <QByteArray>
 #include <QVariantMap>
 
-#define OBJECT_TYPE_ROOT    "ROOT"
-#define OBJECT_TYPE_RECYCLE "RECYCLE"
-#define OBJECT_TYPE_FOLDER  "FOLDER"
-#define OBJECT_TYPE_FILE    "FILE"
-
 typedef QPair<QString, QString> JsonApiParams;
 
 class JsonOperationResponse;
@@ -55,15 +50,15 @@ public:
 
     bool createByPath(
         bool autoparent,
-        QString conflictResolution,
-        QString name,
+        const QString& conflictResolution,
+        const QString& name,
         bool overwrite,
-        QString path,
-        QString type);
-    bool getUploadUrlById(QString method, QString objectId, qlonglong fileSize);
+        const QString& path,
+        const QString& type);
+    bool getUploadUrlById(const QString& method,const QString& objectId, qlonglong fileSize);
     bool completeFileUploadById(const QString &objectId, const QByteArray &storageKey);
-    bool removeBulkById(QList<QString> objectIds);
-    bool recycleBulkById(QList<QString> objectIds);
+    bool removeBulkById(const QList<QString>& objectIds);
+    bool recycleBulkById(const QList<QString>& objectIds);
     bool getDownloadUrlById(const QString &fileObjectId,
                             const QString &driveSerialNum);
 

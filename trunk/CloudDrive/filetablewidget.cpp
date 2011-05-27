@@ -18,7 +18,9 @@
 
 #include <QDebug>
 #include <QUrl>
+
 #include "filetablewidget.h"
+#include "clouddriveobject.h"
 
 FileTableWidget::FileTableWidget(QWidget *parent) :
     QTableWidget(parent)
@@ -62,7 +64,7 @@ void FileTableWidget::startDrag(Qt::DropActions supportedActions)
     QVariant vObjectId = draggedItem->data(Ui::ObjectIdRole);
     QVariant vObjectType = draggedItem->data(Ui::ObjectTypeRole);
 
-    if (vObjectType.toString() == OBJECT_TYPE_FILE)
+    if (vObjectType.toString() == ObjectTypeFile)
     {
         if ((draggedItem->row() == 0) && (draggedItem->text() == ".."))
         {

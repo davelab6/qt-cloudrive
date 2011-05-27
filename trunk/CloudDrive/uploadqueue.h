@@ -22,12 +22,12 @@
 #include <QQueue>
 #include <QNetworkAccessManager>
 #include <QVariantMap>
+
 #include "jsonoperation.h"
 #include "formpost.h"
 
-#define UPLOAD_CONFLICT_RESOLUTION_RENAME "RENAME"
-#define UPLOAD_CONFLICT_RESOLUTION_MERGE "MERGE"
-
+extern const QString UploadConflictResRename;
+extern const QString UploadConflictResMerge;
 
 class UploadQueueItem
 {

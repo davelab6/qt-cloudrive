@@ -22,7 +22,7 @@
 #include <QObject>
 #include <QIODevice>
 
-#define MAX_TOKEN_SIZE 4096
+extern const int MaxTokenLength;
 
 class JavaScriptParser: public QObject
 {
@@ -36,7 +36,7 @@ public:
     void setVarsFilter(const char **varElements);
 
 signals:
-    void onScriptVariable(QString variableName, QString variableValue);
+    void onScriptVariable(const QString& variableName, const QString& variableValue);
 
 private:
     const char **varElements;
