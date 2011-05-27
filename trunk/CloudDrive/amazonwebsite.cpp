@@ -19,7 +19,7 @@
 #include <QtGlobal>
 #include <qjson/src/parser.h>
 #include "amazonwebsite.h"
-#include "utils.h"
+#include "cloudutils.h"
 #include "javascriptparser.h"
 
 AmazonWebsite::AmazonWebsite(): QObject()
@@ -74,11 +74,13 @@ bool AmazonWebsite::loadSignInPage()
     httpGetRequest.setRawHeader(QByteArray("User-Agent"), QByteArray(USER_AGENT));
 
     QNetworkReply* reply = networkAccessManager.get(httpGetRequest);
+    qDebug() << "Login Sent";
     return connect(reply, SIGNAL(finished()), this, SLOT(loadSignInPageFinished()));
 }
 
 void AmazonWebsite::loadSignInPageFinished()
 {
+    qDebug() << "Login Received";
     QNetworkReply *networkReply = ((QNetworkReply *)sender());
     if (!networkReply->error())
     {                
@@ -187,18 +189,18 @@ bool AmazonWebsite::sendCreditentials()
     httpPostRequest.setHeader(QNetworkRequest::ContentTypeHeader, QByteArray("application/x-www-form-urlencoded"));
 
     QUrl params;
-    params.addEncodedQueryItem(QByteArray("action"), QByteArray(urlEncode(loginAction).toAscii()));
+    params.addEncodedQueryItem(QByteArray("action"), QByteArray(Utils::urlEncode(loginAction).toAscii()));
     QListIterator<SignInFormNV> formParamIter(signInFormParams);
     while (formParamIter.hasNext())
     {
         SignInFormNV param = formParamIter.next();
         params.addEncodedQueryItem(
                     QByteArray(param.first.toAscii()),
-                    QByteArray(urlEncode(param.second).toAscii()));
+                    QByteArray(Utils::urlEncode(param.second).toAscii()));
     }
 
-    params.addEncodedQueryItem(QByteArray("email"), QByteArray(urlEncode(email).toAscii()));
-    params.addEncodedQueryItem(QByteArray("password"), QByteArray(urlEncode(password).toAscii()));
+    params.addEncodedQueryItem(QByteArray("email"), QByteArray(Utils::urlEncode(email).toAscii()));
+    params.addEncodedQueryItem(QByteArray("password"), QByteArray(Utils::urlEncode(password).toAscii()));
     params.addEncodedQueryItem("create", "0");
     params.addEncodedQueryItem("x", "145");
     params.addEncodedQueryItem("y", "9");
@@ -259,6 +261,8 @@ void AmazonWebsite::createDownloadQueue()
             SIGNAL(onFileDownloaded(const QString &, qlonglong, const QString &, QIODevice *, const QString &)),
             this,
             SIGNAL(onFileDownloaded(const QString &, qlonglong, const QString &, QIODevice *, const QString &)));
+    connect(downloadQueue, SIGNAL(jsonOpError(QString, QString)),
+            this, SIGNAL(jsonOpError(QString, QString)));
 }
 
 void AmazonWebsite::createUploadQueue()
@@ -273,6 +277,8 @@ void AmazonWebsite::createUploadQueue()
             this, SIGNAL(onUploadProgress(const QString &, qint64, qint64)));
     connect(uploadQueue, SIGNAL(onFileUploaded(const QString &)),
             this, SIGNAL(onFileUploaded(const QString &)));
+    connect(uploadQueue, SIGNAL(jsonOpError(QString, QString)),
+            this, SIGNAL(jsonOpError(QString, QString)));
 }
 
 void AmazonWebsite::fetchSessionAndCustomerIdFinished()
@@ -446,13 +452,15 @@ JsonOperation* AmazonWebsite::createJsonOperation()
 {
     JsonOperation* jsonOp =
             new JsonOperation(&networkAccessManager, driveServer, customerId, sessionId);
-    connect(jsonOp, SIGNAL(error(const QString&, const QString&)),
-            this, SLOT(error(const QString&, const QString&)));
+    connect(jsonOp, SIGNAL(jsonOpError(QString, QString)),
+            this, SLOT(error(QString, QString)));
     return jsonOp;
 }
 
-void AmazonWebsite::error(const QString& errorCode, const QString& errorMessage)
+void AmazonWebsite::error(QString errorCode, QString errorMessage)
 {
+    JsonOperation* jsonOp = (JsonOperation*)sender();
+    jsonOp->deleteLater();
     qDebug() << errorCode << errorMessage;
     emit jsonOpError(errorCode, errorMessage);
 }
@@ -498,10 +506,10 @@ bool AmazonWebsite::listById(QString objectId,
     JsonOperation* jsonOp = createJsonOperation();
     QList<JsonApiParams> params;
     params.append(JsonApiParams("objectId", objectId));
-    params.append(JsonApiParams("ordering", urlEncode(ordering)));
+    params.append(JsonApiParams("ordering", Utils::urlEncode(ordering)));
     params.append(JsonApiParams("nextToken", QString::number(nextToken)));
     params.append(JsonApiParams("maxItems", QString::number(maxItems)));
-    params.append(JsonApiParams("filter", urlEncode(filter)));
+    params.append(JsonApiParams("filter", Utils::urlEncode(filter)));
     connect(jsonOp, SIGNAL(response()), this, SLOT(listByIdResponse()));
     return jsonOp->execute("listById", params);
 }

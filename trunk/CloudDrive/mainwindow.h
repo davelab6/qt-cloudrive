@@ -47,7 +47,7 @@ public slots:
 
 private slots:    
 
-    void jsonOpError(const QString& errorCode, const QString& errorMessage);
+    void jsonOpError(QString errorCode, QString errorMessage);
 
     void on_actionE_xit_triggered();
 

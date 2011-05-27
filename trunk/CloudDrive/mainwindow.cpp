@@ -23,11 +23,11 @@
 #include <QInputDialog>
 #include <QEventLoop>
 
+#include "qjson/src/parser.h"
 #include "generalconfig.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "utils.h"
-#include <qjson/src/parser.h>
+#include "cloudutils.h"
 #include "userconfigdialog.h"
 #include "deferredmimedata.h"
 
@@ -68,9 +68,8 @@ MainWindow::MainWindow(QWidget *parent) :
     {
         return;
     }
-    connect(&amazonWebSite, SIGNAL(jsonOpError(const QString&, const QString&)),
-            this, SLOT(jsonOpError(const QString&, const QString&)));
-
+    connect(&amazonWebSite, SIGNAL(jsonOpError(QString, QString)),
+            this, SLOT(jsonOpError(QString, QString)));
     connect(&amazonWebSite,
                 SIGNAL(onUserSignedIn(const QString&, const QString&)),
                 this,
@@ -175,7 +174,7 @@ void MainWindow::displayObjects(const QList<FileObject> &objectList)
         itemFileName->setData(Ui::ParentObjectIdRole, fileObject.ParentObjectId);
         itemFileName->setData(Ui::ObjectTypeRole, fileObject.ObjectType);
         QTableWidgetItem *itemFileType = new QTableWidgetItem(fileObject.ObjectType);
-        QTableWidgetItem *itemFileSize = new QTableWidgetItem(formatStorage(fileObject.FileSize));
+        QTableWidgetItem *itemFileSize = new QTableWidgetItem(Utils::formatStorage(fileObject.FileSize));
         int row = ui->tblFiles->rowCount();
         ui->tblFiles->insertRow(row);
         ui->tblFiles->setItem(row, 0, itemFileName);
@@ -266,8 +265,8 @@ void MainWindow::onDownloadProgress(const QString &fileName, qint64 bytesReceive
 {
     ui->statusBar->showMessage(QString("Downloading %1 (%2/%3)")
               .arg(fileName)
-              .arg(formatStorage(bytesReceived))
-              .arg(formatStorage(bytesTotal)),
+              .arg(Utils::formatStorage(bytesReceived))
+              .arg(Utils::formatStorage(bytesTotal)),
               1000);
 }
 
@@ -330,9 +329,9 @@ void MainWindow::onGetUserStorage(
     ui->statusBar->showMessage(
                 QString(tr("Signed in, customer id:%1 Storage Total: %2, Used: %3, Free: %4"))
         .arg(customerId)
-        .arg(formatStorage(totalSpace))
-        .arg(formatStorage(usedSpace))
-        .arg(formatStorage(freeSpace)));
+        .arg(Utils::formatStorage(totalSpace))
+        .arg(Utils::formatStorage(usedSpace))
+        .arg(Utils::formatStorage(freeSpace)));
 }
 
 void MainWindow::onFileUploaded(const QString &fileName)
@@ -392,7 +391,7 @@ void MainWindow::on_action_Upload_triggered()
             amazonWebSite.addFileToUploadQueue(selectedFileName,remotePath);
             ui->statusBar->showMessage(
                         QString(tr("Uploading %1 to %2"))
-                        .arg(extractFileName(selectedFileName))
+                        .arg(Utils::extractFileName(selectedFileName))
                         .arg(remotePath));
             connect(&amazonWebSite,
                     SIGNAL(onFileUploaded(const QString &)),
@@ -470,8 +469,8 @@ void MainWindow::onUploadProgress(const QString &fileName, qint64 bytesSent, qin
 {
     ui->statusBar->showMessage(QString(tr("Uploading %1 %2/%3"))
               .arg(fileName)
-              .arg(formatStorage(bytesSent))
-              .arg(formatStorage(bytesTotal)), 1000);
+              .arg(Utils::formatStorage(bytesSent))
+              .arg(Utils::formatStorage(bytesTotal)), 1000);
 }
 
 void MainWindow::dragMoveEvent(QDragMoveEvent *event)
@@ -694,12 +693,13 @@ void MainWindow::onGotDownloadUrl(const QByteArray &downloadURL)
 
 }
 
-void MainWindow::jsonOpError(const QString& errorCode, const QString& errorMessage)
+void MainWindow::jsonOpError(QString errorCode, QString errorMessage)
 {
     QMessageBox msgBox;
-    msgBox.setText("An error occured");
+    msgBox.setText(QString(tr("Error %1 occured")).arg(errorCode.trimmed()));
     msgBox.setIcon(QMessageBox::Critical);
-    msgBox.setInformativeText(QString(tr("Code: %1\nInfo:%2")).arg(errorCode).arg(errorMessage));
+    msgBox.setInformativeText(QString(tr("%1"))
+                              .arg(errorMessage.trimmed()));
     msgBox.setStandardButtons(QMessageBox::Ok);
     msgBox.exec();
 }
@@ -736,9 +736,9 @@ void MainWindow::mimeDargDataRequested(const QString &downloadObjectId, const QS
         qDebug() << "MainWindow::mimeDargDataRequested" << downloadObjectId << downloadFileName ;
         lastDownloadObjectId = downloadObjectId;
         DownloadQueueItem *item =
-                new DownloadQueueItem(extractFileName(downloadFileName),
+                new DownloadQueueItem(Utils::extractFileName(downloadFileName),
                                       downloadObjectId,
-                                      extractFileDir(downloadFileName));
+                                      Utils::extractFileDir(downloadFileName));
         QEventLoop localEventLoop;
         connect(item, SIGNAL(onQueueItemDownloaded()), &localEventLoop, SLOT(quit()));
         qDebug() << "MainWindow::mimeDargDataRequested added item on download queue" ;

@@ -23,7 +23,7 @@
 
 #define ORGANIZATION "Vasko Mitanov"
 #define PRODUCT "QTCloudDrive"
-#define PRODUCT_VERSION "201105252240"
+#define PRODUCT_VERSION "201105271440"
 #define EMAIL_CONFIG_KEY "userEmail"
 #define PASS_CONFIG_KEY "userPass"
 

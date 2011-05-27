@@ -21,7 +21,7 @@
 #include <qjson/src/parser.h>
 #include "generalconfig.h"
 #include "uploadqueue.h"
-#include "utils.h"
+#include "cloudutils.h"
 
 UploadQueueItem::UploadQueueItem(const QString &localFilePath, const QString &remoteFileDir)
 {
@@ -56,7 +56,11 @@ UploadQueue::UploadQueue(QNetworkAccessManager *networkAccessManager,
 
 JsonOperation* UploadQueue::createJsonOperation()
 {
-    return new JsonOperation(networkAccessManager, driveServer, customerId, sessionId);
+    JsonOperation* jsonOp =
+            new JsonOperation(networkAccessManager, driveServer, customerId, sessionId);
+    connect(jsonOp, SIGNAL(jsonOpError(QString, QString)),
+            this, SIGNAL(jsonOpError(QString, QString)));
+    return jsonOp;
 }
 
 bool UploadQueue::addFileToUploadQueue(const QString &localFilePath, const QString &remoteFileDir)
@@ -96,7 +100,7 @@ bool UploadQueue::uploadFile(const UploadQueueItem &queueItem)
     return jsonOper->createByPath(
                 true,
                 UPLOAD_CONFLICT_RESOLUTION_RENAME,
-                extractFileName(queueItem.localFilePath),
+                Utils::extractFileName(queueItem.localFilePath),
                 true,
                 queueItem.remoteFileDir,
                 OBJECT_TYPE_FILE);
@@ -164,7 +168,7 @@ bool UploadQueue::postFile(const QString &endPoint,
         iter.next();
         formPost->addField(iter.key(), iter.value().toString());
     }
-    formPost->addField("Filename", extractFileName(localFileName));
+    formPost->addField("Filename", Utils::extractFileName(localFileName));
     formPost->setFile("file", localFileName, "application/octet-stream");
 
     QNetworkReply *networkReply = formPost->postData(endPoint);

@@ -22,7 +22,6 @@ SOURCES += main.cpp\
         qjson/src/json_scanner.cpp \
         qjson/src/json_parser.cc \
     formpost.cpp \
-    utils.cpp \
     javascriptparser.cpp \
     userconfigdialog.cpp \
     httppostsendbuffer.cpp \
@@ -30,7 +29,8 @@ SOURCES += main.cpp\
     downloadqueue.cpp \
     uploadqueue.cpp \
     deferredmimedata.cpp \
-    filetablewidget.cpp
+    filetablewidget.cpp \
+    cloudutils.cpp
 
 
 HEADERS  += mainwindow.h \
@@ -50,7 +50,6 @@ HEADERS  += mainwindow.h \
         qjson/src/serializer.h \
         qjson/src/serializerrunnable.h \
     formpost.h \
-    utils.h \
     javascriptparser.h \
     userconfigdialog.h \
     httppostsendbuffer.h \
@@ -59,7 +58,8 @@ HEADERS  += mainwindow.h \
     downloadqueue.h \
     uploadqueue.h \
     deferredmimedata.h \
-    filetablewidget.h
+    filetablewidget.h \
+    cloudutils.h
 
 FORMS    += mainwindow.ui \
     userconfigdialog.ui

@@ -78,7 +78,7 @@ private slots:
 
 signals:
     void response();
-    void error(const QString& errorCode, const QString& errorMessage);
+    void jsonOpError(QString errorCode, QString errorMessage);
     void onCreateByPath(const QString& createdObjectId);
     void onGetUploadUrlById(
         const QByteArray &storageKey,

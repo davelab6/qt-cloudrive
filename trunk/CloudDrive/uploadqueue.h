@@ -97,6 +97,7 @@ signals:
     void fileOnQueueAdded();    
     void onUploadProgress(const QString &fileName, qint64 bytesUploaded, qint64 totalBytes);
     void onFileUploaded(const QString &fileName);
+    void jsonOpError(QString errorCode, QString errorMessage);
 
 };
 
