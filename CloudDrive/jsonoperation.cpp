@@ -16,9 +16,11 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.    
 */
 
-#include <qjson/src/parser.h>
 #include <QDebug>
 #include <QNetworkReply>
+
+#include "qjson/src/parser.h"
+#include "clouddriveobject.h"
 #include "cloudutils.h"
 #include "jsonoperation.h"
 #include "generalconfig.h"
@@ -65,7 +67,7 @@ bool JsonOperation::execute(const QString &operationName,
    httpGetRequest.setRawHeader(QByteArray("Origin"), QByteArray("https://www.amazon.com"));
    httpGetRequest.setRawHeader(QByteArray("X-Requested-With"), QByteArray("XMLHttpRequest"));
    httpGetRequest.setRawHeader(QByteArray("x-amzn-SessionId"), QByteArray(sessionId.toAscii()));
-   httpGetRequest.setRawHeader(QByteArray("User-Agent"), QByteArray(USER_AGENT));
+   httpGetRequest.setRawHeader(QByteArray("User-Agent"), UserAgent);
 
    QNetworkReply *networkReply = networkAccessManager->get(httpGetRequest);
    return connect(networkReply, SIGNAL(finished()), this, SLOT(finished()));
@@ -119,11 +121,11 @@ void JsonOperation::finished()
 
 bool JsonOperation::createByPath(
     bool autoparent,
-    QString conflictResolution,
-    QString name,
+    const QString& conflictResolution,
+    const QString& name,
     bool overwrite,
-    QString path,
-    QString type)
+    const QString& path,
+    const QString& type)
 {
     QList<JsonApiParams> params;
     params.append(JsonApiParams("autoparent", autoparent?"true":"false"));
@@ -155,7 +157,7 @@ void JsonOperation::createByPathResponse()
     }
 }
 
-bool JsonOperation::removeBulkById(QList<QString> objectIds)
+bool JsonOperation::removeBulkById(const QList<QString>& objectIds)
 {
     QList<JsonApiParams> params;
     for (int i = 0; i < objectIds.length(); i++)
@@ -189,7 +191,7 @@ void JsonOperation::removeBulkByIdResponse()
     }
 }
 
-bool JsonOperation::recycleBulkById(QList<QString> objectIds)
+bool JsonOperation::recycleBulkById(const QList<QString>& objectIds)
 {
     QList<JsonApiParams> params;
     for (int i = 0; i < objectIds.length(); i++)
@@ -223,7 +225,9 @@ void JsonOperation::recycleBulkByIdResponse()
     }
 }
 
-bool JsonOperation::getUploadUrlById(QString method, QString objectId, qlonglong fileSize)
+bool JsonOperation::getUploadUrlById(const QString& method,
+                                     const QString& objectId,
+                                     qlonglong fileSize)
 {
     QList<JsonApiParams> params;
     params.append(JsonApiParams("method", method /*POST*/));
@@ -265,7 +269,8 @@ void JsonOperation::getUploadUrlByIdResponse()
     }
 }
 
-bool JsonOperation::completeFileUploadById(const QString &objectId, const QByteArray &storageKey)
+bool JsonOperation::completeFileUploadById(const QString &objectId,
+                                           const QByteArray &storageKey)
 {
     QList<JsonApiParams> params;
     params.append(JsonApiParams("objectId", objectId));

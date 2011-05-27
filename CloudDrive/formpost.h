@@ -16,8 +16,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.    
 */
 
-#ifndef __FORMPOST_H__
-#define __FORMPOST_H__
+#ifndef FORMPOST_H
+#define FORMPOST_H
 
 #include <QString>
 #include <QByteArray>
@@ -36,24 +36,17 @@ class FormPost: public QObject
   Q_OBJECT
 
   public:
-    FormPost();
-    QString userAgent();
-    void setUserAgent(QString agent);
-    void setNetworkAccessManager(QNetworkAccessManager * networkAccessManager);
-    QString referer();
-    void setReferer(QString ref);
-    void addField(QString name, QString value);
-    void setFile(QString fieldName, QString fileName, QString mime);
-    QNetworkReply * postData(QString url);
+    FormPost(const QByteArray& userAgent);
+    void setNetworkAccessManager(QNetworkAccessManager * networkAccessManager);        
+    void addField(const QString& name, const QString& value);
+    void setFile(const QString& fieldName, const QString& fileName, const QString& mime);
+    QNetworkReply * postData(const QString& url);
 
   private:
     QNetworkAccessManager * networkAccessManager;    
     HttpPostSendbuffer postSendBuffer;
-    QString userAgentS;
-    QString refererS;
-
- // private slots:
- //   void readData(QNetworkReply * r);
+    const QByteArray& m_userAgent;
+    //QByteArray& m_httpReferer;
 };
 
 #endif

@@ -39,22 +39,22 @@ DownloadQueueItem::DownloadQueueItem(const QString &sourceFileName,
 
 }
 
-QString DownloadQueueItem::GetSourceFileName() const
+QString const& DownloadQueueItem::getSourceFileName() const
 {
     return m_sourceFileName;
 }
 
-QString DownloadQueueItem::GetSourceFileObjectId() const
+QString const& DownloadQueueItem::getSourceFileObjectId() const
 {
     return m_sourceFileObjectId;
 }
 
-QString DownloadQueueItem::GetDestinationDir() const
+QString const& DownloadQueueItem::getDestinationDir() const
 {
     return m_destinationDir;
 }
 
-void DownloadQueueItem::EmitOnQueueItemDownloaded()
+void DownloadQueueItem::emitOnQueueItemDownloaded()
 {
     emit onQueueItemDownloaded();
 }
@@ -71,7 +71,6 @@ DownloadQueue::DownloadQueue(QNetworkAccessManager *networkAccessManager,
     this->driveSerialNum = driveSerialNum;
     this->driveServer = driveServer;
     downloadInProgress = false;
-
 }
 
 JsonOperation* DownloadQueue::createJsonOperation()
@@ -97,7 +96,7 @@ bool DownloadQueue::addFileToDownloadQueue(
     return true;
 }
 
-bool DownloadQueue::addFileToDownloadQueue(DownloadQueueItem *item)
+bool DownloadQueue::addFileToDownloadQueue(DownloadQueueItem* item)
 {
     qDebug() << "DownloadQueue::addFileToDownloadQueue: Added file on download queue";
     filesQueue.enqueue(item);
@@ -135,7 +134,9 @@ bool DownloadQueue::downloadFile(DownloadQueueItem *downloadQueueItem)
     JsonOperation *jsonOp = createJsonOperation();
     connect(jsonOp, SIGNAL(onGetDownloadUrlById(const QByteArray &)),
                             this, SLOT(onGetDownloadUrlById(const QByteArray &)));
-    return jsonOp->getDownloadUrlById(downloadQueueItem->GetSourceFileObjectId(), driveSerialNum);
+    return jsonOp->getDownloadUrlById(
+                downloadQueueItem->getSourceFileObjectId(),
+                driveSerialNum);
 }
 
 void DownloadQueue::onGetDownloadUrlById(const QByteArray &downloadURL)
@@ -160,7 +161,7 @@ bool DownloadQueue::downloadFile(const QByteArray &fileUrl)
    httpGetRequest.setRawHeader(QByteArray("Connection"), QByteArray("keep-alive"));
    httpGetRequest.setRawHeader(QByteArray("Host"), QByteArray(downloadUrl.host().toLatin1()));
    httpGetRequest.setRawHeader(QByteArray("Origin"), QByteArray("https://www.amazon.com"));
-   httpGetRequest.setRawHeader(QByteArray("User-Agent"), QByteArray(USER_AGENT));
+   httpGetRequest.setRawHeader(QByteArray("User-Agent"), UserAgent);
 
    QNetworkReply *networkReply = networkAccessManager->get(httpGetRequest);
    connect(
@@ -174,7 +175,9 @@ bool DownloadQueue::downloadFile(const QByteArray &fileUrl)
 
 void DownloadQueue::downloadProgress(qint64 bytesDownloaded, qint64 totalBytes)
 {
-    emit onDownloadProgress(filesQueue.first()->GetSourceFileName(), bytesDownloaded, totalBytes);
+    emit onDownloadProgress(filesQueue.first()->getSourceFileName(),
+                            bytesDownloaded,
+                            totalBytes);
 }
 
 void DownloadQueue::downloadFileFinished()
@@ -192,10 +195,10 @@ void DownloadQueue::downloadFileFinished()
             emit onFileDownloaded(
                         contentType,
                         contentLength,
-                        item->GetSourceFileName(),
+                        item->getSourceFileName(),
                         networkReply,
-                        item->GetDestinationDir());
-            item->EmitOnQueueItemDownloaded();
+                        item->getDestinationDir());
+            item->emitOnQueueItemDownloaded();
             dequeueFile();
         }
         networkReply->deleteLater();

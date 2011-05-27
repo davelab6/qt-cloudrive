@@ -34,11 +34,6 @@ namespace Ui {
     };
 }
 
-#define OBJECT_TYPE_ROOT    "ROOT"
-#define OBJECT_TYPE_RECYCLE "RECYCLE"
-#define OBJECT_TYPE_FOLDER  "FOLDER"
-#define OBJECT_TYPE_FILE    "FILE"
-
 class FileTableWidget : public QTableWidget
 {
     Q_OBJECT

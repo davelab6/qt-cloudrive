@@ -27,10 +27,10 @@ UserConfigDialog::UserConfigDialog(QWidget *parent) :
     ui(new Ui::UserConfigDialog)
 {
     ui->setupUi(this);
-    setWindowTitle("CloudDrive Account Info");
-    QSettings settings(ORGANIZATION, PRODUCT);
-    ui->edtEmail->setText(settings.value(EMAIL_CONFIG_KEY, QString()).toString());
-    ui->edtPassword->setText(settings.value(PASS_CONFIG_KEY, QString()).toString());
+    setWindowTitle(tr("CloudDrive Account Info"));
+    QSettings settings(Organization, Product);
+    ui->edtEmail->setText(settings.value(EmailConfigKey, QString()).toString());
+    ui->edtPassword->setText(settings.value(PasswordConfigKey, QString()).toString());
 }
 
 UserConfigDialog::~UserConfigDialog()
@@ -47,9 +47,9 @@ void UserConfigDialog::on_buttonBox_accepted()
     {
         return;
     }
-    QSettings settings(ORGANIZATION, PRODUCT);
-    settings.setValue(EMAIL_CONFIG_KEY, userEmail);
-    settings.setValue(PASS_CONFIG_KEY, userPass);
+    QSettings settings(Organization, Product);
+    settings.setValue(EmailConfigKey, userEmail);
+    settings.setValue(PasswordConfigKey, userPass);
     finished(QDialog::Accepted);
 }
 

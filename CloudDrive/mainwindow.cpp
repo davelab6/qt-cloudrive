@@ -27,6 +27,7 @@
 #include "generalconfig.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "clouddriveobject.h"
 #include "cloudutils.h"
 #include "userconfigdialog.h"
 #include "deferredmimedata.h"
@@ -36,28 +37,23 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {    
     ui->setupUi(this);
-    setWindowTitle(QString(tr("Cloud Drive Explorer b%1")).arg(PRODUCT_VERSION));
-
-
+    setWindowTitle(QString(tr("Cloud Drive Explorer b%1")).arg(ProductVersion));
     ui->action_Upload->setEnabled(false);
     ui->actionDelete->setEnabled(false);
     ui->actionRename->setEnabled(false);
     ui->btnPlay->setEnabled(false);
     ui->frmPlayMusic->setVisible(false);
-    //setAcceptDrops(true);
-
-
     ui->statusBar->showMessage(tr("Signing in..."));
-    QSettings settings(ORGANIZATION, PRODUCT);
-    QString userEmail = settings.value(EMAIL_CONFIG_KEY, QString()).toString();
-    QString userPass = settings.value(PASS_CONFIG_KEY, QString()).toString();
+    QSettings settings(Organization, Product);
+    QString userEmail = settings.value(EmailConfigKey, QString()).toString();
+    QString userPass = settings.value(PasswordConfigKey, QString()).toString();
     if (userEmail.isEmpty() || userPass.isEmpty())
     {
         UserConfigDialog userConfigDialog(this);
         if (userConfigDialog.exec() == QDialog::Accepted)
         {
-            userEmail = settings.value(EMAIL_CONFIG_KEY).toString();
-            userPass = settings.value(PASS_CONFIG_KEY).toString();
+            userEmail = settings.value(EmailConfigKey).toString();
+            userPass = settings.value(PasswordConfigKey).toString();
         }
         else
         {
@@ -104,7 +100,6 @@ MainWindow::MainWindow(QWidget *parent) :
             SLOT(onDownloadProgress(const QString &, qint64, qint64)),
             Qt::UniqueConnection);
 
-
     amazonWebSite.signIn(userEmail, userPass);
 }
 
@@ -129,9 +124,9 @@ void MainWindow::onUserSignedIn(const QString &customerId, const QString &sessio
             Qt::UniqueConnection);
 
     connect(&amazonWebSite,
-            SIGNAL(onListObjects(const QList<FileObject> &)),
+            SIGNAL(onListObjects(const QList<CloudDriveFileObject> &)),
             this,
-            SLOT(onListObjects(const QList<FileObject> &)));
+            SLOT(onListObjects(const QList<CloudDriveFileObject> &)));
 
 
     amazonWebSite.getInfoByPath("/");
@@ -152,9 +147,9 @@ void MainWindow::onGetRootPathObjectId(const QString &objectId)
                            "type != 'RECYCLE' and status != 'PENDING' and hidden = false");
 }
 
-void MainWindow::onListObjects(const QList<FileObject> &objectList)
+void MainWindow::onListObjects(const QList<CloudDriveFileObject> &objectList)
 {
-    displayObjects(objectList);
+    displayObjects(objectList);    
     connect(&amazonWebSite,
             SIGNAL(onGetUserStorage(qlonglong, qlonglong, qlonglong)),
             this,
@@ -163,18 +158,18 @@ void MainWindow::onListObjects(const QList<FileObject> &objectList)
     amazonWebSite.getUserStorage();
 }
 
-void MainWindow::displayObjects(const QList<FileObject> &objectList)
+void MainWindow::displayObjects(const QList<CloudDriveFileObject> &objectList)
 {
-    QList<FileObject>::const_iterator fileObjectIter;
+    QList<CloudDriveFileObject>::const_iterator fileObjectIter;
     for (fileObjectIter = objectList.begin(); fileObjectIter != objectList.end(); fileObjectIter++)
     {
-        FileObject fileObject = *fileObjectIter;
-        QTableWidgetItem *itemFileName = new QTableWidgetItem(fileObject.ObjectName);
-        itemFileName->setData(Ui::ObjectIdRole, fileObject.ObjectId);
-        itemFileName->setData(Ui::ParentObjectIdRole, fileObject.ParentObjectId);
-        itemFileName->setData(Ui::ObjectTypeRole, fileObject.ObjectType);
-        QTableWidgetItem *itemFileType = new QTableWidgetItem(fileObject.ObjectType);
-        QTableWidgetItem *itemFileSize = new QTableWidgetItem(Utils::formatStorage(fileObject.FileSize));
+        CloudDriveFileObject fileObject = *fileObjectIter;
+        QTableWidgetItem *itemFileName = new QTableWidgetItem(fileObject.getObjectName());
+        itemFileName->setData(Ui::ObjectIdRole, fileObject.getObjectId());
+        itemFileName->setData(Ui::ParentObjectIdRole, fileObject.getParentObjectId());
+        itemFileName->setData(Ui::ObjectTypeRole, fileObject.getObjectType());
+        QTableWidgetItem *itemFileType = new QTableWidgetItem(fileObject.getObjectType());
+        QTableWidgetItem *itemFileSize = new QTableWidgetItem(Utils::formatStorage(fileObject.getFileSize()));
         int row = ui->tblFiles->rowCount();
         ui->tblFiles->insertRow(row);
         ui->tblFiles->setItem(row, 0, itemFileName);
@@ -188,7 +183,7 @@ void MainWindow::createBackItem()
     QTableWidgetItem *itemFileName = new QTableWidgetItem("..");
     itemFileName->setData(Ui::ObjectIdRole, parentObjectIds.last());
     itemFileName->setData(Ui::ParentObjectIdRole, "");
-    itemFileName->setData(Ui::ObjectTypeRole, OBJECT_TYPE_FOLDER);
+    itemFileName->setData(Ui::ObjectTypeRole, ObjectTypeFolder);
     ui->tblFiles->insertRow(0);
     ui->tblFiles->setItem(0, 0, itemFileName);
 }
@@ -398,7 +393,7 @@ void MainWindow::on_action_Upload_triggered()
                     this,
                     SLOT(onFileUploaded(const QString &)),
                     Qt::UniqueConnection);
-            connect(&amazonWebSite, SIGNAL(uploadProgress(const QString &, qint64, qint64)),
+            connect(&amazonWebSite, SIGNAL(onUploadProgress(const QString &, qint64, qint64)),
                     this, SLOT(onUploadProgress(const QString &, qint64, qint64)),
                     Qt::UniqueConnection);
         }
@@ -407,15 +402,15 @@ void MainWindow::on_action_Upload_triggered()
 
 void MainWindow::on_action_Account_triggered()
 {
-    QSettings settings(ORGANIZATION, PRODUCT);
-    QString userEmail = settings.value(EMAIL_CONFIG_KEY, QString()).toString();
-    QString userPass = settings.value(PASS_CONFIG_KEY, QString()).toString();
+    QSettings settings(Organization, Product);
+    QString userEmail = settings.value(EmailConfigKey, QString()).toString();
+    QString userPass = settings.value(PasswordConfigKey, QString()).toString();
 
     UserConfigDialog userConfigDialog(this);
     if (userConfigDialog.exec() == QDialog::Accepted)
     {
-        userEmail = settings.value(EMAIL_CONFIG_KEY).toString();
-        userPass = settings.value(PASS_CONFIG_KEY).toString();
+        userEmail = settings.value(EmailConfigKey).toString();
+        userPass = settings.value(PasswordConfigKey).toString();
     }
     else
     {
@@ -493,14 +488,14 @@ void MainWindow::on_action_Refresh_triggered()
 void MainWindow::on_actionAbout_triggered()
 {
     QMessageBox msgBox;
-    msgBox.setText("Cloud Drive Application "PRODUCT_VERSION);
-    msgBox.setInformativeText(
+    msgBox.setText(QString(tr("Cloud Drive Application %1")).arg(ProductVersion));
+    msgBox.setInformativeText(tr(
         "QT Cloud Drive, desktop application for connecting to Cloud Drive \r\n"
         "Copyright (C) 2011 Vasko Mitanov vasko.mitanov@gmail.com \r\n"
         "This program is free software: you can redistribute it and/or modify \r\n"
         "it under the terms of the GNU General Public License as published by \r\n"
         "the Free Software Foundation, either version 3 of the License, or \r\n"
-        "(at your option) any later version.");
+        "(at your option) any later version."));
     msgBox.setStandardButtons(QMessageBox::Ok);
     msgBox.exec();
 }
@@ -663,7 +658,7 @@ void MainWindow::on_actionPlay_triggered()
             {
                 QVariant vObjectId = itemFileName->data(Ui::ObjectIdRole);
                 QVariant vObjectType = itemFileName->data(Ui::ObjectTypeRole);
-                if (vObjectType.toString() == OBJECT_TYPE_FILE)
+                if (vObjectType.toString() == ObjectTypeFile)
                 {
                     objectIds.append(vObjectId.toString());
                 }
@@ -726,7 +721,6 @@ void MainWindow::itemDragged(const QString& objectId, const QString& fileName)
 void MainWindow::mimeDargDataRequested(const QString &downloadObjectId, const QString &downloadFileName)
 {
     //DeferredMimeData *mimeData = (DeferredMimeData *)sender();
-
     if (lastDownloadObjectId == downloadObjectId)
     {
 
@@ -759,11 +753,11 @@ void MainWindow::downloadFileByItemIndex(const QModelIndex & index)
 
         if (!vObjectId.isNull())
         {
-           if (QString(OBJECT_TYPE_FOLDER).compare(vObjectType.toString()) == 0)
+           if (QString(ObjectTypeFolder).compare(vObjectType.toString()) == 0)
            {
                openFolder(itemFileName->text(), vObjectId.toString(), index.row());
            }
-           else if (QString(OBJECT_TYPE_FILE).compare(vObjectType.toString()) == 0)
+           else if (QString(ObjectTypeFile).compare(vObjectType.toString()) == 0)
            {
                downloadFile(itemFileName->text(), vObjectId.toString(), QString());
            }

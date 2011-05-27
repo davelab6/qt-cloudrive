@@ -19,12 +19,18 @@
 #ifndef GENERALCONFIG_H
 #define GENERALCONFIG_H
 
-#define USER_AGENT "Mozilla/5.0 (X11; U; Linux i686; en-US) AppleWebKit/534.16 (KHTML, like Gecko) Chrome/10.0.648.205 Safari/534.16"
+#include <QByteArray>
+#include <QString>
 
-#define ORGANIZATION "Vasko Mitanov"
-#define PRODUCT "QTCloudDrive"
-#define PRODUCT_VERSION "201105271440"
-#define EMAIL_CONFIG_KEY "userEmail"
-#define PASS_CONFIG_KEY "userPass"
+extern const QByteArray UserAgent;
+
+extern const QString DriveServer;
+extern const QString DriveSerialNum;
+
+extern const QString Organization;
+extern const QString Product;
+extern const QString ProductVersion;
+extern const QString EmailConfigKey;
+extern const QString PasswordConfigKey;
 
 #endif // GENERALCONFIG_H

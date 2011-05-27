@@ -21,6 +21,8 @@
 
 #include "htmlparser.h"
 
+const int MaxHtmlElementLength = 4096;
+
 HtmlParser::HtmlParser()
 {    
     filterElements = NULL;
@@ -41,9 +43,9 @@ bool HtmlParser::parseAttributes(const char *elementData, QList<QHtmlAttribute *
     int state = 0;
     char currChar = 0x00;
     int currPos = 0;
-    char currAttribName[MAX_ELEMENT_SIZE];
+    char currAttribName[MaxHtmlElementLength];
     int currAttribNamePos = 0;
-    char currAttribVal[MAX_ELEMENT_SIZE];
+    char currAttribVal[MaxHtmlElementLength];
     int currAttribValPos = 0;
     for ( ; ; )
     {
@@ -59,7 +61,7 @@ bool HtmlParser::parseAttributes(const char *elementData, QList<QHtmlAttribute *
                 {
                     currAttribName[currAttribNamePos] = currChar;
                     currAttribNamePos++;
-                    if (currAttribNamePos == MAX_ELEMENT_SIZE)
+                    if (currAttribNamePos == MaxHtmlElementLength)
                     {
                         //RESET
                         currAttribNamePos = 0;
@@ -113,7 +115,7 @@ bool HtmlParser::parseAttributes(const char *elementData, QList<QHtmlAttribute *
                 {
                     currAttribVal[currAttribValPos] = currChar;
                     currAttribValPos++;
-                    if (currAttribValPos == MAX_ELEMENT_SIZE)
+                    if (currAttribValPos == MaxHtmlElementLength)
                     {
                         //RESET
                         currAttribNamePos = 0;
@@ -150,7 +152,7 @@ bool HtmlParser::parseAttributes(const char *elementData, QList<QHtmlAttribute *
                 {
                     currAttribVal[currAttribValPos] = currChar;
                     currAttribValPos++;
-                    if (currAttribValPos == MAX_ELEMENT_SIZE)
+                    if (currAttribValPos == MaxHtmlElementLength)
                     {
                         //RESET
                         currAttribNamePos = 0;
@@ -190,7 +192,7 @@ bool HtmlParser::parseAttributes(const char *elementData, QList<QHtmlAttribute *
                 {
                     currAttribVal[currAttribValPos] = currChar;
                     currAttribValPos++;
-                    if (currAttribValPos == MAX_ELEMENT_SIZE)
+                    if (currAttribValPos == MaxHtmlElementLength)
                     {
                         //RESET
                         currAttribNamePos = 0;
@@ -230,7 +232,7 @@ bool HtmlParser::parseAttributes(const char *elementData, QList<QHtmlAttribute *
                 {
                     currAttribVal[currAttribValPos] = currChar;
                     currAttribValPos++;
-                    if (currAttribValPos == MAX_ELEMENT_SIZE)
+                    if (currAttribValPos == MaxHtmlElementLength)
                     {
                         //RESET
                         currAttribNamePos = 0;
@@ -301,9 +303,9 @@ bool HtmlParser::parseHtmlElement(char *elementName, char *elementData)
 
 bool HtmlParser::parseHtmlPage(QIODevice *iodevice)
 {
-    char currElementName[MAX_ELEMENT_SIZE];
+    char currElementName[MaxHtmlElementLength];
     int currElementNamePos = 0;
-    char currElementData[MAX_ELEMENT_SIZE];
+    char currElementData[MaxHtmlElementLength];
     int currElementDataPos = 0;
 
     char currChar = 0x00;
@@ -340,7 +342,7 @@ bool HtmlParser::parseHtmlPage(QIODevice *iodevice)
                     {
                         currElementName[currElementNamePos] = currChar;
                         currElementNamePos++;
-                        if (currElementNamePos == MAX_ELEMENT_SIZE)
+                        if (currElementNamePos == MaxHtmlElementLength)
                         {
                             //buffer overflow, reset state machine
                             parserState = BeforeElement;
@@ -388,7 +390,7 @@ bool HtmlParser::parseHtmlPage(QIODevice *iodevice)
                     {
                         currElementData[currElementDataPos] = currChar;
                         currElementDataPos++;
-                        if (currElementDataPos == MAX_ELEMENT_SIZE)
+                        if (currElementDataPos == MaxHtmlElementLength)
                         {
                             //buffer overflow, reset state machine
                             parserState = BeforeElement;

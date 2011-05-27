@@ -18,10 +18,15 @@
 
 #include <QDebug>
 #include <QFile>
-#include <qjson/src/parser.h>
+
+#include "qjson/src/parser.h"
 #include "generalconfig.h"
 #include "uploadqueue.h"
+#include "clouddriveobject.h"
 #include "cloudutils.h"
+
+const QString UploadConflictResRename = "RENAME";
+const QString UploadConflictResMerge = "MERGE";
 
 UploadQueueItem::UploadQueueItem(const QString &localFilePath, const QString &remoteFileDir)
 {
@@ -99,11 +104,11 @@ bool UploadQueue::uploadFile(const UploadQueueItem &queueItem)
             this, SLOT(onCreateByPath(const QString&)));
     return jsonOper->createByPath(
                 true,
-                UPLOAD_CONFLICT_RESOLUTION_RENAME,
+                UploadConflictResRename,
                 Utils::extractFileName(queueItem.localFilePath),
                 true,
                 queueItem.remoteFileDir,
-                OBJECT_TYPE_FILE);
+                ObjectTypeFile);
 }
 
 void UploadQueue::onCreateByPath(const QString& createdObjectId)
@@ -159,9 +164,8 @@ bool UploadQueue::postFile(const QString &endPoint,
 #error SSL IS REQUIRED
 #endif
 
-    formPost = new FormPost();
-    formPost->setNetworkAccessManager(networkAccessManager);
-    formPost->setUserAgent(USER_AGENT);
+    formPost = new FormPost(UserAgent);
+    formPost->setNetworkAccessManager(networkAccessManager);    
     QMapIterator<QString, QVariant> iter(uploadParams);
     while (iter.hasNext())
     {

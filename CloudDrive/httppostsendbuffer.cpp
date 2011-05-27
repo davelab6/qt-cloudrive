@@ -23,8 +23,6 @@
 
 #include "httppostsendbuffer.h"
 
-#define FILE_ATTACHMENT_MARKER 0x04
-
 HttpPostSendbuffer::HttpPostSendbuffer(QObject *parent) :
     QIODevice(parent)
 {

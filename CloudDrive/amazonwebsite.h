@@ -21,28 +21,15 @@
 
 #include <QtNetwork>
 #include <QObject>
+
 #include "generalconfig.h"
 #include "htmlparser.h"
 #include "jsonoperation.h"
 #include "downloadqueue.h"
 #include "uploadqueue.h"
+#include "clouddriveobject.h"
 
 typedef QPair<QString, QString> SignInFormNV;
-
-class FileObject
-{
-
-public:
-    QString ObjectName;
-    int FileSize;
-    QString ParentObjectId;
-    QString ObjectId;
-    QString ObjectType;
-    QDateTime LastModified;
-
-public:
-    static QList<FileObject> parseFileObjects(QByteArray encodedObjects);
-};
 
 class AmazonWebsite : public QObject
     {
@@ -63,8 +50,8 @@ public:
     bool addFileToDownloadQueue(DownloadQueueItem *item);
     bool addFileToUploadQueue(const QString &localFilePath, const QString &remoteFileDir);
     bool createFolder(const QString &parentFolder, const QString &folderName);
-    bool removeBulkById(QList<QString> objectIds);
-    bool recycleBulkById(QList<QString> objectIds);    
+    bool removeBulkById(const QList<QString>& objectIds);
+    bool recycleBulkById(const QList<QString>& objectIds);
     bool getDownloadUrlById(const QString &fileObjectId);
 
 private:
@@ -80,6 +67,7 @@ private:
         qlonglong *freeSpace,
         qlonglong *totalSpace,
         qlonglong *usedSpace);
+    bool parseFileObjects(QByteArray encodedObjects, QList<CloudDriveFileObject>& fileObjects ) const;
 
 
 private slots:     
@@ -107,7 +95,7 @@ signals:
     void jsonOpError(QString errorCode, QString errorMessage);
     void onUserSignedIn(const QString &customerId, const QString &sessionId);
     void onGetInfoByPath(const QString &objectId);
-    void onListObjects(const QList<FileObject> &objectList);
+    void onListObjects(const QList<CloudDriveFileObject> &objectList);
     void onGetUserStorage(qlonglong freeSpace, qlonglong totalSpace, qlonglong usedSpace);
     void onDownloadProgress(const QString &fileName, qint64, qint64);
     void onFileDownloaded(const QString &contentType, qlonglong contentLength,
@@ -134,8 +122,6 @@ private:
 
     QString customerId;
     QString sessionId;
-    QString driveServer;
-    QString driveSerialNum;
 
     QByteArray currentUploadingFileStorageKey;
     QString currentUploadingFile;

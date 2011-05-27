@@ -30,7 +30,9 @@ SOURCES += main.cpp\
     uploadqueue.cpp \
     deferredmimedata.cpp \
     filetablewidget.cpp \
-    cloudutils.cpp
+    cloudutils.cpp \
+    generalconfig.cpp \
+    clouddriveobject.cpp
 
 
 HEADERS  += mainwindow.h \
@@ -59,7 +61,8 @@ HEADERS  += mainwindow.h \
     uploadqueue.h \
     deferredmimedata.h \
     filetablewidget.h \
-    cloudutils.h
+    cloudutils.h \
+    clouddriveobject.h
 
 FORMS    += mainwindow.ui \
     userconfigdialog.ui

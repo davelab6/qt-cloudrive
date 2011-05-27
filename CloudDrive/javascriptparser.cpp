@@ -18,6 +18,8 @@
 
 #include "javascriptparser.h"
 
+const int MaxTokenLength = 4096;
+
 JavaScriptParser::JavaScriptParser()
 {
 }
@@ -53,7 +55,7 @@ inline bool getNextToken(QIODevice *iodevice, char *tokenBuf)
             }
             tokenBuf[tokenBufPos] = currChar;
             tokenBufPos++;
-            if (tokenBufPos == MAX_TOKEN_SIZE)
+            if (tokenBufPos == MaxTokenLength)
             {
                 tokenBufPos = 0;
             }
@@ -72,7 +74,7 @@ inline bool getNextToken(QIODevice *iodevice, char *tokenBuf)
 
 bool JavaScriptParser::parseHtmlPage(QIODevice *iodevice, const char *varName, char *varValue)
 {
-    char tokenBuf[MAX_TOKEN_SIZE];
+    char tokenBuf[MaxTokenLength];
     /*
     ADriveServer = "/clouddrive/api/";
     MusicServiceURL = "/gp/dmusic/mp3/player"

@@ -18,8 +18,10 @@
 
 #ifndef DOWNLOADQUEUE_H
 #define DOWNLOADQUEUE_H
+
 #include <QQueue>
 #include <QNetworkAccessManager>
+
 #include "jsonoperation.h"
 
 class DownloadQueueItem: public QObject
@@ -31,10 +33,10 @@ public:
                       const QString &sourceFileObjectId,
                       const QString &destinationDir);
 
-    QString GetSourceFileName() const;
-    QString GetSourceFileObjectId() const;
-    QString GetDestinationDir() const;
-    void EmitOnQueueItemDownloaded();
+    QString const& getSourceFileName() const;
+    QString const& getSourceFileObjectId() const;
+    QString const& getDestinationDir() const;
+    void emitOnQueueItemDownloaded();
 
 private:
     QString m_sourceFileName;

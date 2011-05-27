@@ -23,10 +23,20 @@
 #include "deferredmimedata.h"
 
 DeferredMimeDataItem::DeferredMimeDataItem(const QUrl &filenameLocalUrl, const QString &objectId):
-downloadFileNameLocalUrl(filenameLocalUrl),
-downloadObjectId(objectId)
+    downloadFileNameLocalUrl(filenameLocalUrl),
+    downloadObjectId(objectId)
 {
 
+}
+
+QUrl const& DeferredMimeDataItem::getDownloadFileNameLocalUrl() const
+{
+    return downloadFileNameLocalUrl;
+}
+
+QString const& DeferredMimeDataItem::getDownloadObjectId() const
+{
+    return downloadObjectId;
 }
 
 DeferredMimeData::DeferredMimeData(QString downloadFileName, QString downloadObjectId)
@@ -69,7 +79,7 @@ QVariant DeferredMimeData::retrieveData(const QString &mimeType,
             for(int i = 0; i < tempFileNameList.length(); i++)
             {
                 QVariant tempFileName = tempFileNameList.at(i);
-                QString  downloadObjectId = deferredMimeDataItems.at(i).downloadObjectId;
+                const QString&  downloadObjectId = deferredMimeDataItems.at(i).getDownloadObjectId();
                 //qDebug() << "Begin DeferredMimeData::retrieveData " << downloadObjectId << mimeType;
                 emit const_cast<DeferredMimeData*>(this)->dataRequested(
                             downloadObjectId,

@@ -24,11 +24,16 @@
 #include <QPair>
 #include <QString>
 
-#define MAX_ELEMENT_SIZE 4096
+extern const int MaxHtmlElementLength;
 
 typedef QPair<QString, QString> QHtmlAttribute;
 
-typedef enum tagParserState { BeforeElement = 0, InElementName = 1, InElementData = 2, SkipMode = 3 } ParserState;
+typedef enum tagParserState {
+    BeforeElement = 0,
+    InElementName = 1,
+    InElementData = 2,
+    SkipMode = 3
+} ParserState;
 
 class HtmlParser: public QObject
 {
@@ -46,7 +51,7 @@ private:
     bool parseAttributes(const char *elementData, QList<QHtmlAttribute *> &attributes);
 
 signals:
-    void onHtmlElement(QString elementName, QList<QHtmlAttribute *> elementAttributes);
+    void onHtmlElement(const QString& elementName, const QList<QHtmlAttribute *>& elementAttributes);
 
 private:        
     const char **filterElements;    
