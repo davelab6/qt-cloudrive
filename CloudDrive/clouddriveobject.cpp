@@ -16,6 +16,9 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <QDebug>
+
+#include "cloudutils.h"
 #include "clouddriveobject.h"
 
 const QString ObjectTypeRoot("ROOT");
@@ -30,7 +33,8 @@ CloudDriveFileObject::CloudDriveFileObject(const QVariantMap& objectMap)
     objectName = objectMap["name"].toString();
     objectType = objectMap["type"].toString();
     fileSize = objectMap["size"].toInt();
-    lastModified = objectMap["lastUpdatedDate"].toDateTime();
+    creationDateTime = Utils::decodeJsonDateTime(objectMap["creationDate"].toString());
+    lastModified = Utils::decodeJsonDateTime(objectMap["lastUpdatedDate"].toString());
 }
 
 QString const& CloudDriveFileObject::getObjectName() const
@@ -61,4 +65,9 @@ QString const& CloudDriveFileObject::getObjectType() const
 QDateTime const& CloudDriveFileObject::getLastModified() const
 {
     return lastModified;
+}
+
+QDateTime const& CloudDriveFileObject::getCreationDateTime() const
+{
+    return creationDateTime;
 }

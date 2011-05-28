@@ -17,8 +17,12 @@
 */
 
 #include <QtGui/QApplication>
+#include <QDebug>
+#include <QString>
+
 #include "generalconfig.h"
 #include "mainwindow.h"
+#include "cloudutils.h"
 
 int main(int argc, char *argv[])
 {
@@ -26,6 +30,5 @@ int main(int argc, char *argv[])
     a.setApplicationName(Product);
     MainWindow w;
     w.show();
-
     return a.exec();
 }

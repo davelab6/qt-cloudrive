@@ -169,11 +169,17 @@ void MainWindow::displayObjects(const QList<CloudDriveFileObject> &objectList)
         itemFileName->setData(Ui::ObjectTypeRole, fileObject.getObjectType());
         QTableWidgetItem *itemFileType = new QTableWidgetItem(fileObject.getObjectType());
         QTableWidgetItem *itemFileSize = new QTableWidgetItem(Utils::formatStorage(fileObject.getFileSize()));
+        QTableWidgetItem *itemFileDateTime = new QTableWidgetItem(fileObject.getLastModified().toLocalTime().toString());
         int row = ui->tblFiles->rowCount();
         ui->tblFiles->insertRow(row);
         ui->tblFiles->setItem(row, 0, itemFileName);
         ui->tblFiles->setItem(row, 1, itemFileType);
         ui->tblFiles->setItem(row, 2, itemFileSize);
+        ui->tblFiles->setItem(row, 3, itemFileDateTime);
+        ui->tblFiles->resizeColumnToContents(0);
+        ui->tblFiles->resizeColumnToContents(1);
+        ui->tblFiles->resizeColumnToContents(2);
+        ui->tblFiles->resizeColumnToContents(3);
     }
 }
 
