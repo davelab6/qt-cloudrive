@@ -1,0 +1,29 @@
+IDI_ICON1               ICON    DISCARDABLE     "CloudDrive.ico"
+LANGUAGE 0x0400, 0x01
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,3,0
+ PRODUCTVERSION 1,0,3,0
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904E4"
+        BEGIN
+            VALUE "Comments", "Qt Cloud Drive"
+            VALUE "CompanyName", "Vasko Mitanov"
+            VALUE "FileDescription", "Qt Cloud Drive"
+            VALUE "FileVersion", "1.0.3.0"
+            VALUE "InternalName", "clouddrive-20110528"
+            VALUE "LegalCopyright", "(c) 2011 Vasko Mitanov. GNU Public License."
+            VALUE "OriginalFilename", "clouddrive-20110528.exe"
+            VALUE "ProductName", "Qt Cloud Drive"
+            VALUE "ProductVersion", "1.0.3.0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END

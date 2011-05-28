@@ -8,7 +8,7 @@ QT       += core gui phonon network
 
 TARGET = CloudDrive
 TEMPLATE = app
-
+RC_FILE = CloudDrive.rc
 
 SOURCES += main.cpp\
         mainwindow.cpp \

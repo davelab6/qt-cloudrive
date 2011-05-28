@@ -21,6 +21,7 @@
 
 #include <QString>
 #include <QByteArray>
+#include <QDateTime>
 
 class Utils
 {
@@ -33,6 +34,7 @@ public:
     static QString decodeFileName(QString contentDisp);
     static QString extractFileName(const QString &fileName);
     static QString extractFileDir(const QString &fileName);
+    static QDateTime decodeJsonDateTime(const QString &jsonDateTime);
 };
 
 #endif // UTILS_H

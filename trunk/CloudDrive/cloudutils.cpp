@@ -16,6 +16,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.    
 */
 
+#include <QDebug>
+
 #include "cloudutils.h"
 
 void Utils::char2hex( QChar dec, QString &str )
@@ -195,3 +197,74 @@ QString Utils::extractFileDir(const QString &fileName)
     return name;
 }
 
+QDateTime Utils::decodeJsonDateTime(const QString &jsonDateTime)
+{
+    if (jsonDateTime.contains('.')
+            && (jsonDateTime.contains('E') || jsonDateTime.contains('e')))
+    {
+        int indexOfDot = jsonDateTime.indexOf('.');
+        if (indexOfDot >= 0)
+        {
+            int indexOfE = jsonDateTime.indexOf('E', indexOfDot + 1);
+            if (indexOfE < 0)
+            {
+                indexOfE = jsonDateTime.indexOf('e', indexOfDot + 1);
+            }
+            if (indexOfE > 0)
+            {
+                quint64 res = 0;
+                int i = 0;
+                for (; i < indexOfDot; i++)
+                {
+                    QChar ch = jsonDateTime.at(i);
+                    if (ch.isDigit())
+                    {
+                        res *= 10;
+                        res += (ch.toAscii() - '0');
+                    }
+                    else
+                    {
+                        //invalid format
+                        qDebug() << "Invalid date time format";
+                        return QDateTime();
+                    }
+                }
+                int tenths = 0;
+                bool ok = 0;
+                tenths = jsonDateTime.right(jsonDateTime.length() - indexOfE - 1).toInt(&ok);
+                if (ok)
+                {
+                    i++;
+                    for (; /*tenths >0 &&*/ i < indexOfE; i++, tenths--)
+                    {
+                        QChar ch = jsonDateTime.at(i);
+                        if (ch.isDigit())
+                        {
+                            res *= 10;
+                            res += (ch.toAscii() - '0');
+                        }
+                        else
+                        {
+                            //invalid format
+                            qDebug() << "Invalid date time format";
+                            return QDateTime();
+                        }
+                    }
+                    int d = (indexOfE - indexOfDot);
+                    if ((d > 0) && (d < 13))
+                    {
+                        d = 13 - d;
+                        for ( ; d > 0; d--)
+                        {
+                            res *= 10;
+                        }
+                    }
+                    QDateTime result;
+                    result.setMSecsSinceEpoch(res);
+                    return result;
+                }
+            }
+        }
+    }
+    return QDateTime();
+}

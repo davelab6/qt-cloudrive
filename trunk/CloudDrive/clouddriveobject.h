@@ -37,6 +37,7 @@ private:
     QString parentObjectId;
     QString objectId;
     QString objectType;
+    QDateTime creationDateTime;
     QDateTime lastModified;
 
 public:
@@ -48,6 +49,7 @@ public:
     QString const& getParentObjectId() const;
     QString const& getObjectId() const;
     QString const& getObjectType() const;
+    QDateTime const& getCreationDateTime() const;
     QDateTime const& getLastModified() const;
 };
 
