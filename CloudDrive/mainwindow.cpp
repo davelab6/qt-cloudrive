@@ -1,6 +1,6 @@
 /*
     QT Cloud Drive, desktop application for connecting to Cloud Drive
-    Copyright (C) 2011 Vasko Mitanov vasko.mitanov@gmail.com
+    Copyright (C) 2011 Vasko Mitanov vasko.mitanov@hotmail.com
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -490,7 +490,7 @@ void MainWindow::on_actionAbout_triggered()
     msgBox.setText(QString(tr("Cloud Drive Application %1")).arg(ProductVersion));
     msgBox.setInformativeText(tr(
         "QT Cloud Drive, desktop application for connecting to Cloud Drive \r\n"
-        "Copyright (C) 2011 Vasko Mitanov vasko.mitanov@gmail.com \r\n"
+        "Copyright (C) 2011 Vasko Mitanov vasko.mitanov@hotmail.com \r\n"
         "This program is free software: you can redistribute it and/or modify \r\n"
         "it under the terms of the GNU General Public License as published by \r\n"
         "the Free Software Foundation, either version 3 of the License, or \r\n"
