@@ -22,7 +22,7 @@
 #include <QByteArray>
 #include <QString>
 
-extern const QByteArray UserAgent;
+extern QByteArray const UserAgent;
 
 extern const QString DriveServer;
 extern const QString DriveSerialNum;

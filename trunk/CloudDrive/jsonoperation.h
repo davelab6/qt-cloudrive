@@ -48,6 +48,7 @@ public slots:
 public:
     QByteArray getData() const;
 
+    bool getUserStorage();
     bool createByPath(
         bool autoparent,
         const QString& conflictResolution,
@@ -61,6 +62,11 @@ public:
     bool recycleBulkById(const QList<QString>& objectIds);
     bool getDownloadUrlById(const QString &fileObjectId,
                             const QString &driveSerialNum);
+    bool moveById(
+        const QString& sourceId,
+        const QString& destinationParentId,
+        const QString& destinationName,
+        bool overwrite);
 
 private slots:
     void finished();
@@ -70,8 +76,10 @@ private slots:
     void removeBulkByIdResponse();
     void recycleBulkByIdResponse();
     void getDownloadUrlByIdResponse();
+    void moveByIdResponse();
+    void getUserStorageResponse();
 
-signals:
+public: signals:
     void response();
     void jsonOpError(QString errorCode, QString errorMessage);
     void onCreateByPath(const QString& createdObjectId);
@@ -84,6 +92,8 @@ signals:
     void onRemoveBulkById(const QString &requestId);
     void onRecycleBulkById(const QString &requestId);
     void onGetDownloadUrlById(const QByteArray &downloadURL);
+    void onMoveById(const QString &objectId);
+    void onGetUserStorage(qlonglong freeSpace, qlonglong totalSpace, qlonglong usedSpace);
 
 private:
     QString driveServer;

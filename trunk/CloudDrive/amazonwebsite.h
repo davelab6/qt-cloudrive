@@ -53,6 +53,11 @@ public:
     bool removeBulkById(const QList<QString>& objectIds);
     bool recycleBulkById(const QList<QString>& objectIds);
     bool getDownloadUrlById(const QString &fileObjectId);
+    bool moveById(
+        const QString& sourceId,
+        const QString& destinationParentId,
+        const QString& destinationName,
+        bool overwrite);
 
 private:
     JsonOperation* createJsonOperation();    
@@ -82,9 +87,13 @@ private slots:
      void onRemoveBulkById(const QString &requestId);
      void onRecycleBulkById(const QString &requestId);
      void onGetDownloadUrlById(const QByteArray &downloadURL);
-     void getUserStorageResponse();
+     void onGetUserStorage(
+         qlonglong freeSpace,
+         qlonglong totalSpace,
+         qlonglong usedSpace);
      void getInfoByPathResponse();
      void listByIdResponse();
+     void onMoveByIdResponse(const QString &objectId);
 
 public:
      //JSON operations
@@ -96,7 +105,7 @@ signals:
     void onUserSignedIn(const QString &customerId, const QString &sessionId);
     void onGetInfoByPath(const QString &objectId);
     void onListObjects(const QList<CloudDriveFileObject> &objectList);
-    void onGetUserStorage(qlonglong freeSpace, qlonglong totalSpace, qlonglong usedSpace);
+    void userStorage(qlonglong freeSpace, qlonglong totalSpace, qlonglong usedSpace);
     void onDownloadProgress(const QString &fileName, qint64, qint64);
     void onFileDownloaded(const QString &contentType, qlonglong contentLength,
                           const QString &fileName, QIODevice *inputStream,
@@ -107,6 +116,7 @@ signals:
     void onBulkRemovedById();
     void onBulkRecycledById();
     void onGotDownloadUrl(const QByteArray &downloadURL);
+    void onMoveById();
 
 
 private:
