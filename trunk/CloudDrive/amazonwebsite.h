@@ -1,6 +1,6 @@
 /*
     QT Cloud Drive, desktop application for connecting to Cloud Drive
-    Copyright (C) 2011 Vasko Mitanov vasko.mitanov@gmail.com
+    Copyright (C) 2011 Vasko Mitanov vasko.mitanov@hotmail.com
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -72,6 +72,7 @@ private:
         qlonglong *freeSpace,
         qlonglong *totalSpace,
         qlonglong *usedSpace);
+    void addExtraHeaders(QNetworkRequest& httpRequest);
     bool parseFileObjects(QByteArray encodedObjects, QList<CloudDriveFileObject>& fileObjects ) const;
 
 

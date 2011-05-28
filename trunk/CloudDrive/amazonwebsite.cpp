@@ -1,6 +1,6 @@
 /*
     QT Cloud Drive, desktop application for connecting to Cloud Drive
-    Copyright (C) 2011 Vasko Mitanov vasko.mitanov@gmail.com
+    Copyright (C) 2011 Vasko Mitanov vasko.mitanov@hotmail.com
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -43,6 +43,19 @@ bool AmazonWebsite::signIn(QString email, QString password)
     return loadSignInPage();
 }
 
+void AmazonWebsite::addExtraHeaders(QNetworkRequest& httpRequest)
+{
+    httpRequest.setRawHeader(QByteArray("Accept"),
+        QByteArray("application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5"));
+    httpRequest.setRawHeader(QByteArray("Accept-Charset"), QByteArray("ISO-8859-1,utf-8;q=0.7,*;q=0.3"));
+    httpRequest.setRawHeader(QByteArray("Accept-Language"), QByteArray("en-US,en;q=0.8"));
+    httpRequest.setRawHeader(QByteArray("Cache-Control"), QByteArray("max-age=0"));
+    httpRequest.setRawHeader(QByteArray("Connection"), QByteArray("keep-alive"));
+    httpRequest.setRawHeader(QByteArray("Host"), QByteArray("www.amazon.com"));
+    httpRequest.setRawHeader(QByteArray("Origin"), QByteArray("https://www.amazon.com"));
+    httpRequest.setRawHeader(QByteArray("User-Agent"), UserAgent);
+}
+
 bool AmazonWebsite::loadSignInPage()
 {
 #ifdef QT_NO_OPENSSL
@@ -63,16 +76,7 @@ bool AmazonWebsite::loadSignInPage()
 
     QNetworkRequest httpGetRequest(signInPageUrl);
     httpGetRequest.setSslConfiguration(QSslConfiguration::defaultConfiguration());
-    httpGetRequest.setRawHeader(QByteArray("Accept"),
-        QByteArray("application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5"));
-    httpGetRequest.setRawHeader(QByteArray("Accept-Charset"), QByteArray("ISO-8859-1,utf-8;q=0.7,*;q=0.3"));
-    httpGetRequest.setRawHeader(QByteArray("Accept-Language"), QByteArray("en-US,en;q=0.8"));
-    httpGetRequest.setRawHeader(QByteArray("Cache-Control"), QByteArray("max-age=0"));
-    httpGetRequest.setRawHeader(QByteArray("Connection"), QByteArray("keep-alive"));
-    httpGetRequest.setRawHeader(QByteArray("Host"), QByteArray("www.amazon.com"));
-    httpGetRequest.setRawHeader(QByteArray("Origin"), QByteArray("https://www.amazon.com"));
-    httpGetRequest.setRawHeader(QByteArray("User-Agent"), UserAgent);
-
+    addExtraHeaders(httpGetRequest);
     QNetworkReply* reply = networkAccessManager.get(httpGetRequest);    
     return connect(reply, SIGNAL(finished()), this, SLOT(loadSignInPageFinished()));
 }
@@ -159,33 +163,23 @@ bool AmazonWebsite::sendCreditentials()
 #endif
 
     QUrl loginActionUrl = QUrl(loginAction);
-    QByteArray signInRefererPageUrl = QByteArray(
-                "https://www.amazon.com/ap/signin?_encoding=UTF8&"
-                "openid.assoc_handle=usflex&"
-                "openid.return_to=https%3A%2F%2Fwww.amazon.com%2Fclouddrive%3F_encoding%3DUTF8%26ref_%3Dsa_menu_acd_urc2&"
-                "openid.mode=checkid_setup&"
-                "openid.ns=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0&"
-                "openid.claimed_id=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&"
-                "openid.pape.max_auth_age=900&"
-                "openid.ns.pape=http%3A%2F%2Fspecs.openid.net%2Fextensions%2Fpape%2F1.0&"
-                "openid.identity=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select");
+    QUrl signInRefererPageUrl = QUrl("https://www.amazon.com/ap/signin?_encoding=UTF8&"
+        "openid.assoc_handle=usflex&"
+        "openid.return_to=https://www.amazon.com/clouddrive?_encoding=UTF8&ref_=sa_menu_acd_urc2&"
+        "openid.mode=checkid_setup&"
+        "openid.ns=http://specs.openid.net/auth/2.0&"
+        "openid.claimed_id=http://specs.openid.net/auth/2.0/identifier_select&"
+        "openid.pape.max_auth_age=900&"
+        "openid.ns.pape=http://specs.openid.net/extensions/pape/1.0&"
+        "openid.identity=http://specs.openid.net/auth/2.0/identifier_select");
 
     QNetworkRequest httpPostRequest(loginActionUrl);
     httpPostRequest.setSslConfiguration(QSslConfiguration::defaultConfiguration());
-    httpPostRequest.setRawHeader(QByteArray("Accept"),
-        QByteArray("application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5"));
-    httpPostRequest.setRawHeader(QByteArray("Accept-Charset"), QByteArray("ISO-8859-1,utf-8;q=0.7,*;q=0.3"));
-    httpPostRequest.setRawHeader(QByteArray("Accept-Language"), QByteArray("en-US,en;q=0.8"));
-    httpPostRequest.setRawHeader(QByteArray("Cache-Control"), QByteArray("max-age=0"));
-    httpPostRequest.setRawHeader(QByteArray("Connection"), QByteArray("keep-alive"));
-    httpPostRequest.setRawHeader(QByteArray("Host"), QByteArray("www.amazon.com"));
-    httpPostRequest.setRawHeader(QByteArray("Origin"), QByteArray("https://www.amazon.com"));    
-    httpPostRequest.setRawHeader(QByteArray("Referer"), signInRefererPageUrl);
-    httpPostRequest.setRawHeader(QByteArray("User-Agent"), UserAgent);
+    addExtraHeaders(httpPostRequest);
+    httpPostRequest.setRawHeader(QByteArray("Referer"),  signInRefererPageUrl.toEncoded());
     httpPostRequest.setHeader(QNetworkRequest::ContentTypeHeader, QByteArray("application/x-www-form-urlencoded"));
-
     QUrl params;
-    params.addEncodedQueryItem(QByteArray("action"), QByteArray(Utils::urlEncode(loginAction).toAscii()));
+    params.addEncodedQueryItem(QByteArray("action"), loginActionUrl.toEncoded());
     QListIterator<SignInFormNV> formParamIter(signInFormParams);
     while (formParamIter.hasNext())
     {
@@ -229,15 +223,7 @@ bool AmazonWebsite::fetchSessionAndCustomerId(QString redirectLocation)
 
     QNetworkRequest httpGetRequest(cloudDrivePageUrl);
     httpGetRequest.setSslConfiguration(QSslConfiguration::defaultConfiguration());
-    httpGetRequest.setRawHeader(QByteArray("Accept"),
-        QByteArray("application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5"));
-    httpGetRequest.setRawHeader(QByteArray("Accept-Charset"), QByteArray("ISO-8859-1,utf-8;q=0.7,*;q=0.3"));
-    httpGetRequest.setRawHeader(QByteArray("Accept-Language"), QByteArray("en-US,en;q=0.8"));
-    httpGetRequest.setRawHeader(QByteArray("Cache-Control"), QByteArray("max-age=0"));
-    httpGetRequest.setRawHeader(QByteArray("Connection"), QByteArray("keep-alive"));
-    httpGetRequest.setRawHeader(QByteArray("Host"), QByteArray("www.amazon.com"));
-    httpGetRequest.setRawHeader(QByteArray("Origin"), QByteArray("https://www.amazon.com"));
-    httpGetRequest.setRawHeader(QByteArray("User-Agent"), UserAgent);
+    addExtraHeaders(httpGetRequest);
 
     QNetworkReply *networkReply = networkAccessManager.get(httpGetRequest);
     return connect(networkReply, SIGNAL(finished()),
@@ -381,16 +367,7 @@ bool AmazonWebsite::signOut()
                 "action=sign-out");
 
     QNetworkRequest httpGetRequest(signOutPageUrl);
-    httpGetRequest.setRawHeader(QByteArray("Accept"),
-        QByteArray("application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5"));
-    httpGetRequest.setRawHeader(QByteArray("Accept-Charset"), QByteArray("ISO-8859-1,utf-8;q=0.7,*;q=0.3"));
-    httpGetRequest.setRawHeader(QByteArray("Accept-Language"), QByteArray("en-US,en;q=0.8"));
-    httpGetRequest.setRawHeader(QByteArray("Cache-Control"), QByteArray("max-age=0"));
-    httpGetRequest.setRawHeader(QByteArray("Connection"), QByteArray("keep-alive"));
-    httpGetRequest.setRawHeader(QByteArray("Host"), QByteArray("www.amazon.com"));
-    httpGetRequest.setRawHeader(QByteArray("Origin"), QByteArray("https://www.amazon.com"));
-    httpGetRequest.setRawHeader(QByteArray("User-Agent"), UserAgent);
-
+    addExtraHeaders(httpGetRequest);
 
     QEventLoop loop;
     //connect(&networkAccessManager, SIGNAL(finished(QNetworkReply*)),
