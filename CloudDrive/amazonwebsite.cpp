@@ -73,14 +73,12 @@ bool AmazonWebsite::loadSignInPage()
     httpGetRequest.setRawHeader(QByteArray("Origin"), QByteArray("https://www.amazon.com"));
     httpGetRequest.setRawHeader(QByteArray("User-Agent"), UserAgent);
 
-    QNetworkReply* reply = networkAccessManager.get(httpGetRequest);
-    qDebug() << "Login Sent";
+    QNetworkReply* reply = networkAccessManager.get(httpGetRequest);    
     return connect(reply, SIGNAL(finished()), this, SLOT(loadSignInPageFinished()));
 }
 
 void AmazonWebsite::loadSignInPageFinished()
-{
-    qDebug() << "Login Received";
+{    
     QNetworkReply *networkReply = ((QNetworkReply *)sender());
     if (!networkReply->error())
     {                
@@ -635,54 +633,43 @@ void AmazonWebsite::onCreateFolderByPath(const QString& createdObjectId)
 
 bool AmazonWebsite::getUserStorage()
 {
-    JsonOperation* jsonOp = createJsonOperation();
-    QList<JsonApiParams> params;
-    connect(jsonOp, SIGNAL(response()), this, SLOT(getUserStorageResponse()));
-    return jsonOp->execute("getUserStorage", params);
+    JsonOperation* jsonOper = createJsonOperation();
+    connect(jsonOper, SIGNAL(onGetUserStorage(
+                                 qlonglong,
+                                 qlonglong,
+                                 qlonglong)),
+            this, SLOT(onGetUserStorage(
+                           qlonglong,
+                           qlonglong,
+                           qlonglong)));
+    return jsonOper->getUserStorage();
 }
 
-void AmazonWebsite::getUserStorageResponse()
+void AmazonWebsite::onGetUserStorage(
+    qlonglong freeSpace,
+    qlonglong totalSpace,
+    qlonglong usedSpace)
 {
     JsonOperation *jsonOp = (JsonOperation *)sender();
-    qlonglong freeSpace;
-    qlonglong totalSpace;
-    qlonglong usedSpace;
-    if (parseStorageInfo(jsonOp->getData(), &freeSpace, &totalSpace, &usedSpace))
-    {
-        emit onGetUserStorage(freeSpace, totalSpace, usedSpace);
-    }
     jsonOp->deleteLater();
+    emit userStorage(freeSpace, totalSpace, usedSpace);
 }
 
-bool AmazonWebsite::parseStorageInfo(
-    QByteArray response,
-    qlonglong *freeSpace,
-    qlonglong *totalSpace,
-    qlonglong *usedSpace)
+bool AmazonWebsite::moveById(
+    const QString& sourceId,
+    const QString& destinationParentId,
+    const QString& destinationName,
+    bool overwrite)
 {
-    QJson::Parser parser;
-    bool parseStatus;
-    QVariantMap parseResult = parser.parse(response, &parseStatus).toMap();
-    if (!parseStatus)
-    {
-        qDebug() << "An error occurred during parsing";
-        return false;
-    }
-    else
-    {
-        *freeSpace =
-                parseResult["getUserStorageResponse"]
-                .toMap()["getUserStorageResult"]
-                .toMap()["freeSpace"].toLongLong();
-        *totalSpace =
-                parseResult["getUserStorageResponse"]
-                .toMap()["getUserStorageResult"]
-                .toMap()["totalSpace"].toLongLong();
-        *usedSpace =
-                parseResult["getUserStorageResponse"]
-                .toMap()["getUserStorageResult"]
-                .toMap()["usedSpace"].toLongLong();
+    JsonOperation* jsonOper = createJsonOperation();
+    connect(jsonOper, SIGNAL(onMoveById(const QString &)),
+            this, SLOT(onMoveByIdResponse(const QString &)));
+    return jsonOper->moveById(sourceId, destinationParentId, destinationName, overwrite);
+}
 
-        return true;
-    }
+void AmazonWebsite::onMoveByIdResponse(const QString &objectId)
+{
+    JsonOperation *jsonOp = (JsonOperation *)sender();
+    jsonOp->deleteLater();
+    emit onMoveById();
 }

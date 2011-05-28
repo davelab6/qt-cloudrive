@@ -37,10 +37,12 @@ HttpPostSendbuffer::HttpPostSendbuffer(QObject *parent) :
 
 QByteArray HttpPostSendbuffer::strToEnc(QString s)
 {
-  if (encodingS=="utf-8")
+  if (encodingS == "utf-8")
   {
     return s.toUtf8();
-  } else {
+  }
+  else
+  {
     return s.toAscii();
   }
 }

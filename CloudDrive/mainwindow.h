@@ -51,7 +51,7 @@ public slots:
     void onFileDownloaded(const QString &contentType, qlonglong contentLength,
                           const QString &fileName, QIODevice *inputStream,
                           const QString &fileDestDir);
-    void onGetUserStorage(qlonglong freeSpace, qlonglong totalSpace, qlonglong usedSpace);
+    void userStorage(qlonglong freeSpace, qlonglong totalSpace, qlonglong usedSpace);
     void onFileUploaded(const QString &fileName);
     void onFolderCreated(const QString &folderObjectId);
     void onBulkRemovedById();
@@ -91,6 +91,10 @@ private slots:
     void mimeDargDataRequested(const QString &downloadObjectId, const QString &downloadFileName);
 
     void itemsDropped(const QList<QUrl>& urlList);
+
+    void on_actionRename_triggered();
+
+    void onMoveById();
 
 protected:
     void closeEvent(QCloseEvent *event);    

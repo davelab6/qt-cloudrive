@@ -336,3 +336,75 @@ void JsonOperation::getDownloadUrlByIdResponse()
         emit onGetDownloadUrlById(downloadURL);
     }
 }
+
+bool JsonOperation::getUserStorage()
+{
+    QList<JsonApiParams> params;
+    connect(this, SIGNAL(response()), this, SLOT(getUserStorageResponse()));
+    return execute("getUserStorage", params);
+}
+
+void JsonOperation::getUserStorageResponse()
+{
+    JsonOperation *jsonOp = (JsonOperation *)sender();
+    qlonglong freeSpace;
+    qlonglong totalSpace;
+    qlonglong usedSpace;
+    QJson::Parser parser;
+    bool parseStatus;
+    QVariantMap parseResult = parser.parse(jsonOp->getData(), &parseStatus).toMap();
+    if (!parseStatus)
+    {
+        qDebug() << "An error occurred during parsing";        
+    }
+    else
+    {
+        freeSpace =
+                parseResult["getUserStorageResponse"]
+                .toMap()["getUserStorageResult"]
+                .toMap()["freeSpace"].toLongLong();
+        totalSpace =
+                parseResult["getUserStorageResponse"]
+                .toMap()["getUserStorageResult"]
+                .toMap()["totalSpace"].toLongLong();
+        usedSpace =
+                parseResult["getUserStorageResponse"]
+                .toMap()["getUserStorageResult"]
+                .toMap()["usedSpace"].toLongLong();
+        emit onGetUserStorage(freeSpace, totalSpace, usedSpace);
+    }
+}
+
+bool JsonOperation::moveById(
+    const QString& sourceId,
+    const QString& destinationParentId,
+    const QString& destinationName,
+    bool overwrite)
+{
+    QList<JsonApiParams> params;    
+    params.append(JsonApiParams("sourceId", sourceId));
+    params.append(JsonApiParams("destinationParentId", destinationParentId));
+    params.append(JsonApiParams("destinationName", Utils::urlEncode(destinationName)));
+    params.append(JsonApiParams("overwrite", overwrite?"true":"false"));
+    connect(this, SIGNAL(response()), this, SLOT(moveByIdResponse()));
+    return execute("moveById", params);
+}
+
+void JsonOperation::moveByIdResponse()
+{
+    JsonOperation *jsonOp = (JsonOperation *)sender();
+    QJson::Parser parser;
+    bool parseStatus;
+    QVariantMap parseResult = parser.parse(jsonOp->getData(), &parseStatus).toMap();
+    if (!parseStatus)
+    {
+        qDebug() << "An error occurred during parsing";
+        emit onMoveById(QString());
+    }
+    else
+    {
+        emit onMoveById(parseResult["moveByIdResponse"]
+                            .toMap()["moveByIdResult"]
+                            .toMap()["objectId"].toString());
+    }
+}

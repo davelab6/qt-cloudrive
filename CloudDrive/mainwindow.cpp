@@ -23,7 +23,6 @@
 #include <QInputDialog>
 #include <QEventLoop>
 
-#include "qjson/src/parser.h"
 #include "generalconfig.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -151,9 +150,9 @@ void MainWindow::onListObjects(const QList<CloudDriveFileObject> &objectList)
 {
     displayObjects(objectList);    
     connect(&amazonWebSite,
-            SIGNAL(onGetUserStorage(qlonglong, qlonglong, qlonglong)),
+            SIGNAL(userStorage(qlonglong, qlonglong, qlonglong)),
             this,
-            SLOT(onGetUserStorage(qlonglong, qlonglong, qlonglong)),
+            SLOT(userStorage(qlonglong, qlonglong, qlonglong)),
             Qt::UniqueConnection);
     amazonWebSite.getUserStorage();
 }
@@ -316,7 +315,7 @@ void MainWindow::onFileDownloaded(const QString &contentType,
     inputStream->close();
 }
 
-void MainWindow::onGetUserStorage(
+void MainWindow::userStorage(
     qlonglong freeSpace,
     qlonglong totalSpace,
     qlonglong usedSpace)
@@ -784,4 +783,72 @@ void MainWindow::on_action_Download_triggered()
      {
          downloadFileByItemIndex(selectedObject);
      }
+}
+
+void MainWindow::on_actionRename_triggered()
+{
+    QModelIndexList selectedList =
+            ui->tblFiles->selectionModel()->selectedRows();
+
+    if (selectedList.isEmpty())
+    {
+        ui->actionDelete->setEnabled(false);
+        ui->actionRename->setEnabled(false);
+        return;
+    }
+    int totalFilesSelected = 0;
+    QString selectedObjectId;
+    QString selectedObjectName;
+    QString selectedObjectType;
+    QString parentObjectId;
+
+    foreach (QModelIndex index, selectedList)
+    {
+        QTableWidgetItem *itemFileName =
+                ui->tblFiles->item(index.row(), 0);
+        if (itemFileName != NULL)
+        {
+            if ((itemFileName->text() == "..")
+                    && (index.row() == 0))
+            {
+
+            }
+            else
+            {
+                QVariant vObjectId = itemFileName->data(Ui::ObjectIdRole);
+                QVariant vParentObjectId = itemFileName->data(Ui::ParentObjectIdRole);
+                QVariant vObjectType = itemFileName->data(Ui::ObjectTypeRole);
+                selectedObjectId = vObjectId.toString();
+                selectedObjectName = itemFileName->text();
+                selectedObjectType = vObjectType.toString();
+                parentObjectId = vParentObjectId.toString();
+                totalFilesSelected++;
+            }
+        }
+    }
+
+    if (totalFilesSelected > 0)
+    {
+        QString msg = QString(tr("Rename %1 '%2' to:"))
+                .arg(selectedObjectType.toLower())
+                .arg(selectedObjectName);
+        bool ok;
+        QString newFileName = QInputDialog::getText(
+                   this,
+                   tr("Rename"),
+                   msg,
+                   QLineEdit::Normal,
+                   selectedObjectName,
+                   &ok);
+        if (ok && !newFileName.isEmpty())
+        {
+            connect(&amazonWebSite, SIGNAL(onMoveById()), this, SLOT(onMoveById()), Qt::UniqueConnection);
+            amazonWebSite.moveById(selectedObjectId, parentObjectId, newFileName, true);
+        }
+    }
+}
+
+void MainWindow::onMoveById()
+{
+    refreshCurrentFolder();
 }
