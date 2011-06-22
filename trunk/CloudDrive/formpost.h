@@ -22,9 +22,7 @@
 #include <QString>
 #include <QByteArray>
 #include <QFile>
-#include <QProgressBar>
 #include <QDateTime>
-#include <QWidget>
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
 #include <QNetworkReply>

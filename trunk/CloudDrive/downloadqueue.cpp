@@ -26,7 +26,7 @@
 #include "generalconfig.h"
 #include "downloadqueue.h"
 #include "cloudutils.h"
-#include <qjson/src/parser.h>
+#include "qjson/src/parser.h"
 
 DownloadQueueItem::DownloadQueueItem(const QString &sourceFileName,
                                      const QString &sourceFileObjectId,
