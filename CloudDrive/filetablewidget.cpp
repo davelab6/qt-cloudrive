@@ -56,6 +56,20 @@ void FileTableWidget::dropEvent(QDropEvent *event)
     }
 }
 
+void FileTableWidget::keyPressEvent(QKeyEvent *event)
+{
+    QTableWidget::keyPressEvent(event);
+    if ((event->key() == Qt::Key_Return)
+            || (event->key() == Qt::Key_Enter))
+    {
+        emit returnPressed();
+    }
+    else
+    {
+        event->accept();
+    }
+}
+
 void FileTableWidget::startDrag(Qt::DropActions supportedActions)
 {
     QTableWidgetItem *draggedItem = currentItem();

@@ -103,6 +103,7 @@ public:
 
 signals:
     void jsonOpError(QString errorCode, QString errorMessage);
+    void onErrorInUserSignedIn(const QString &errorMessage);
     void onUserSignedIn(const QString &customerId, const QString &sessionId);
     void onGetInfoByPath(const QString &objectId);
     void onListObjects(const QList<CloudDriveFileObject> &objectList);

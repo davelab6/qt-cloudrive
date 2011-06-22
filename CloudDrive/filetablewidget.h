@@ -44,9 +44,11 @@ public:
     void dragEnterEvent(QDragEnterEvent *event);
     void startDrag(Qt::DropActions supportedActions);
     Qt::DropActions supportedDropActions () const;
+    void keyPressEvent(QKeyEvent *event);
 signals:
     void itemDragged(const QString& objectId, const QString& fileName);
     void itemsDropped(const QList<QUrl>& urlList);
+    void returnPressed();
 
 public slots:
 

@@ -27,7 +27,7 @@ const QString DriveSerialNum("191-5955500-0636011");
 
 const QString Organization("Vasko Mitanov");
 const QString Product("QTCloudDrive");
-const QString ProductVersion("201105282130");
+const QString ProductVersion("20110622");
 const QString EmailConfigKey("userEmail");
 const QString PasswordConfigKey("userPass");
 
