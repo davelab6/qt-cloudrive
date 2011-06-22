@@ -43,6 +43,7 @@ public:
     ~MainWindow();    
 
 public slots:
+    void onErrorInUserSignedIn(const QString &errorMessage);
     void onUserSignedIn(const QString &customerId, const QString &sessionId);
     void onGetRootPathObjectId(const QString &objectId);
     void onListObjects(const QList<CloudDriveFileObject> &objectList);    
@@ -97,6 +98,7 @@ private slots:
     void onMoveById();
 
 protected:
+    void initForm();
     void closeEvent(QCloseEvent *event);    
     void dragMoveEvent(QDragMoveEvent *event);
     void dragEnterEvent(QDragEnterEvent *event);

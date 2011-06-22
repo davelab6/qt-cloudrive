@@ -37,48 +37,38 @@ MainWindow::MainWindow(QWidget *parent) :
 {    
     ui->setupUi(this);
     setWindowTitle(QString(tr("Cloud Drive Explorer b%1")).arg(ProductVersion));
-    ui->action_Upload->setEnabled(false);
-    ui->actionDelete->setEnabled(false);
-    ui->actionRename->setEnabled(false);
-    ui->btnPlay->setEnabled(false);
-    ui->frmPlayMusic->setVisible(false);
-    ui->statusBar->showMessage(tr("Signing in..."));
-    QSettings settings(Organization, Product);
-    QString userEmail = settings.value(EmailConfigKey, QString()).toString();
-    QString userPass = settings.value(PasswordConfigKey, QString()).toString();
-    if (userEmail.isEmpty() || userPass.isEmpty())
-    {
-        UserConfigDialog userConfigDialog(this);
-        if (userConfigDialog.exec() == QDialog::Accepted)
-        {
-            userEmail = settings.value(EmailConfigKey).toString();
-            userPass = settings.value(PasswordConfigKey).toString();
-        }
-        else
-        {
-            return;
-        }
-    }
-    if (userEmail.isEmpty() || userPass.isEmpty())
-    {
-        return;
-    }
+    initForm();
+
     connect(&amazonWebSite, SIGNAL(jsonOpError(QString, QString)),
             this, SLOT(jsonOpError(QString, QString)));
+
     connect(&amazonWebSite,
                 SIGNAL(onUserSignedIn(const QString&, const QString&)),
                 this,
                 SLOT(onUserSignedIn(const QString&, const QString&)));
+
+    connect(&amazonWebSite,
+            SIGNAL(onErrorInUserSignedIn(const QString &)),
+            this,
+            SLOT(onErrorInUserSignedIn(const QString &)));
+
     connect(&amazonWebSite, SIGNAL(onFileUploaded(const QString &)),
             this, SLOT(onFileUploaded(const QString &)),
             Qt::UniqueConnection);
+
     connect(&amazonWebSite, SIGNAL(onUploadProgress(const QString &, qint64, qint64)),
             this, SLOT(onUploadProgress(const QString &, qint64, qint64)),
             Qt::UniqueConnection);
+
     connect(ui->tblFiles, SIGNAL(itemDragged(const QString&, const QString&)),
             this, SLOT(itemDragged(const QString&, const QString&)));
+
     connect(ui->tblFiles, SIGNAL(itemsDropped(const QList<QUrl>&)),
             this, SLOT(itemsDropped(const QList<QUrl>&)));
+
+    connect(ui->tblFiles, SIGNAL(returnPressed()),
+            this, SLOT(on_action_Download_triggered()));
+
     connect(&amazonWebSite,
             SIGNAL(onFileDownloaded(const QString &,
                                     qlonglong,
@@ -99,7 +89,18 @@ MainWindow::MainWindow(QWidget *parent) :
             SLOT(onDownloadProgress(const QString &, qint64, qint64)),
             Qt::UniqueConnection);
 
-    amazonWebSite.signIn(userEmail, userPass);
+
+    QSettings settings(Organization, Product);
+    QString userEmail = settings.value(EmailConfigKey, QString()).toString();
+    QString userPass = settings.value(PasswordConfigKey, QString()).toString();
+    if (userEmail.isEmpty() || userPass.isEmpty())
+    {
+        on_action_Account_triggered();
+    }
+    else
+    {
+        amazonWebSite.signIn(userEmail, userPass);
+    }
 }
 
 MainWindow::~MainWindow()
@@ -108,10 +109,41 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::initForm()
+{
+    ui->action_Upload->setEnabled(false);
+    ui->actionDelete->setEnabled(false);
+    ui->actionRename->setEnabled(false);
+    ui->action_Refresh->setEnabled(false);
+    ui->btnPlay->setEnabled(false);
+    ui->frmPlayMusic->setVisible(false);
+    ui->tblFiles->clearContents();
+    ui->tblFiles->setRowCount(0);
+    ui->statusBar->showMessage(tr("Signing in..."));
+}
+
+void MainWindow::onErrorInUserSignedIn(const QString &errorMessage)
+{
+    initForm();
+    QMessageBox msgBox;
+    msgBox.setText(errorMessage);
+    msgBox.setInformativeText(tr("An error occurred while signing in CloudDrive, "
+                                 "check your e-mail and/or password."));
+    msgBox.setStandardButtons(QMessageBox::Ok);
+    msgBox.exec();
+
+}
+
 void MainWindow::onUserSignedIn(const QString &customerId, const QString &sessionId)
 {
     this->customerId = customerId;
     this->sessionId = sessionId;
+
+    if (customerId.isEmpty() || sessionId.isEmpty())
+    {
+        onErrorInUserSignedIn(tr("Error occurred while signing in CloudDrive"));
+        return;
+    }
 
     parentObjectPaths.push("/");
     parentObjectIds.clear();
@@ -125,8 +157,8 @@ void MainWindow::onUserSignedIn(const QString &customerId, const QString &sessio
     connect(&amazonWebSite,
             SIGNAL(onListObjects(const QList<CloudDriveFileObject> &)),
             this,
-            SLOT(onListObjects(const QList<CloudDriveFileObject> &)));
-
+            SLOT(onListObjects(const QList<CloudDriveFileObject> &)),
+            Qt::UniqueConnection);
 
     amazonWebSite.getInfoByPath("/");
 }
@@ -159,6 +191,7 @@ void MainWindow::onListObjects(const QList<CloudDriveFileObject> &objectList)
 
 void MainWindow::displayObjects(const QList<CloudDriveFileObject> &objectList)
 {
+    bool selRow = false;
     QList<CloudDriveFileObject>::const_iterator fileObjectIter;
     for (fileObjectIter = objectList.begin(); fileObjectIter != objectList.end(); fileObjectIter++)
     {
@@ -180,6 +213,11 @@ void MainWindow::displayObjects(const QList<CloudDriveFileObject> &objectList)
         ui->tblFiles->resizeColumnToContents(1);
         ui->tblFiles->resizeColumnToContents(2);
         ui->tblFiles->resizeColumnToContents(3);
+        if (!selRow)
+        {
+            ui->tblFiles->selectRow(0);
+            selRow = true;
+        }
     }
 }
 
@@ -326,6 +364,7 @@ void MainWindow::userStorage(
     qlonglong totalSpace,
     qlonglong usedSpace)
 {
+    ui->action_Refresh->setEnabled(true);
     ui->statusBar->showMessage(
                 QString(tr("Signed in, customer id:%1 Storage Total: %2, Used: %3, Free: %4"))
         .arg(customerId)
@@ -418,18 +457,18 @@ void MainWindow::on_action_Account_triggered()
         userPass = settings.value(PasswordConfigKey).toString();
     }
     else
-    {
+    {        
+        this->customerId = QString();
+        this->sessionId = QString();
         return;
     }
     if (userEmail.isEmpty() || userPass.isEmpty())
-    {
+    {        
+        this->customerId = QString();
+        this->sessionId = QString();
         return;
-    }
-
-    connect(&amazonWebSite,
-                SIGNAL(onUserSignedIn(const QString&, const QString&)),
-                this,
-                SLOT(onUserSignedIn(const QString&, const QString&)));
+    }   
+    initForm();
     amazonWebSite.signIn(userEmail, userPass);
 }
 

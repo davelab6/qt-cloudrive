@@ -38,6 +38,7 @@ AmazonWebsite::AmazonWebsite(): QObject()
 
 bool AmazonWebsite::signIn(QString email, QString password)
 {
+    signedIn = false;
     this->email = email;
     this->password = password;
     return loadSignInPage();
@@ -210,6 +211,15 @@ void AmazonWebsite::handleSendCreditentialsPage()
             QString redirectLocation = networkReply->rawHeader("Location");
             fetchSessionAndCustomerId(redirectLocation);
         }
+        else
+        {
+            emit onErrorInUserSignedIn(QString(tr("An error occurred while signing in.")));
+        }
+    }
+    else
+    {
+        qDebug() << "An error occurred in handleSendCreditentialsPage() " << networkReply->errorString();
+        emit onErrorInUserSignedIn(QString(tr("An error occurred while signing in.")));
     }
 }
 
@@ -282,7 +292,7 @@ void AmazonWebsite::createUploadQueue()
 
 void AmazonWebsite::fetchSessionAndCustomerIdFinished()
 {
-    QNetworkReply *networkReply = ((QNetworkReply *)sender());
+   QNetworkReply *networkReply = ((QNetworkReply *)sender());
    if (!networkReply->error())
     {
         networkReply->deleteLater();
@@ -307,6 +317,11 @@ void AmazonWebsite::fetchSessionAndCustomerIdFinished()
             createDownloadQueue();
             createUploadQueue();
             emit onUserSignedIn(customerId, sessionId);
+        }
+        else
+        {
+            //Error occurred while signing in
+            emit onErrorInUserSignedIn(QString(tr("An error occurred while signing in.")));
         }
     }
     else
